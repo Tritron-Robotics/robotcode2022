@@ -6,7 +6,6 @@ package frc.robot;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -17,33 +16,35 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ShootingSubsystem;
 
 /** Add your docs here. */
 public class RobotContainer {
     // Drivetrain subsystem.
     private final DriveTrain robotDrive = new DriveTrain();
+    private final ShootingSubsystem shootingSubsystem = new ShootingSubsystem();
     private final AutoDrive autoDrive; 
-    private final Joystick leftStick = new Joystick(0);
-    //private final JoystickButton button = new JoystickButton(leftStick, 8);
-    // leftStick.getRawButton(1) == Y
-    // leftStick.getRawButton(8) == RT
-    // button index corresponds with order from top down on frc driver
+    private final Joystick controller = new Joystick(0);
 
     public RobotContainer() {
-        //System.out.println(leftStick.getRawAxis(0));
-        robotDrive.setDefaultCommand(
-            new DriveCommand(
-                robotDrive, 
-                () -> -leftStick.getY(), 
-                () -> -leftStick.getRawAxis(3),
-                () -> leftStick.getRawButton(8))
-        );
+        Command driveCommand = new DriveCommand(
+            robotDrive, 
+            () -> -controller.getY(), 
+            () -> -controller.getRawAxis(3));
+        robotDrive.setDefaultCommand(driveCommand);
+
+        Command shootCommand = new ShootCommand(
+            shootingSubsystem,
+            () -> controller.getRawButton(Constants.Controller.rightTrigger));       
+        shootingSubsystem.setDefaultCommand(shootCommand);
+
         autoDrive = new AutoDrive(robotDrive);
     }
 
@@ -56,18 +57,18 @@ public class RobotContainer {
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(Constants.ksVolts,
-                                    Constants.kvVoltSecondsPerMeter,
-                                    Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
+            new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
+                                    Constants.Kinematics.kvVoltSecondsPerMeter,
+                                    Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+            Constants.Kinematics.kDriveKinematics,
             10);
 
         // Create config for trajectory
         TrajectoryConfig config =
-            new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-                                Constants.kMaxAccelerationMetersPerSecondSquared)
+            new TrajectoryConfig(Constants.Kinematics.kMaxSpeedMetersPerSecond,
+                                Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
                 // Add kinematics to ensure max speed is actually obeyed
-                .setKinematics(Constants.kDriveKinematics)
+                .setKinematics(Constants.Kinematics.kDriveKinematics)
                 // Apply the voltage constraint
                 .addConstraint(autoVoltageConstraint);
 
@@ -89,14 +90,14 @@ public class RobotContainer {
         RamseteCommand ramseteCommand = new RamseteCommand(
             exampleTrajectory,
             robotDrive::getPose,
-            new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-            new SimpleMotorFeedforward(Constants.ksVolts,
-                                       Constants.kvVoltSecondsPerMeter,
-                                       Constants.kaVoltSecondsSquaredPerMeter),
-            Constants.kDriveKinematics,
+            new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
+            new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
+                                       Constants.Kinematics.kvVoltSecondsPerMeter,
+                                       Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+            Constants.Kinematics.kDriveKinematics,
             robotDrive::getWheelSpeeds,
-            new PIDController(Constants.kPDriveVel, 0, 0),
-            new PIDController(Constants.kPDriveVel, 0, 0),
+            new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
+            new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
             robotDrive::tankDriveVolts,
             robotDrive

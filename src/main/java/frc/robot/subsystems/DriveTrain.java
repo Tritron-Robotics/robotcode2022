@@ -6,17 +6,16 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** Add your docs here. */
@@ -60,8 +59,6 @@ public class DriveTrain extends SubsystemBase {
         rearLeft.setInverted(false);
         rearRight.setInverted(false);
 
-        //intakeMotor.follow(topLeftShootMotor);
-
         // Initialize drive configuration.
         drive = new DifferentialDrive(rearLeft, rearRight);
         //shootingDrive = new DifferentialDriveWheelSpeeds();
@@ -69,7 +66,6 @@ public class DriveTrain extends SubsystemBase {
 
         gyro = new AHRS(SPI.Port.kMXP);
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d()); // Track Robot Position
-
     }
 
     // Basic single joystick drive configuration.

@@ -27,15 +27,18 @@ public class AutoDrive extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    while(timer.get() < 5.0) {
-      driveTrain.driveForward(1);
-    }
-    isFinished = true;
+    // while(timer.get() < 5.0) {
+    //   driveTrain.driveForward(1);
+    // }
+    //isFinished = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() 
+  {
+    System.out.print("Autonomous execut method was called");
+  }
 
   // Called once the command ends or is interrupted.
   @Override
