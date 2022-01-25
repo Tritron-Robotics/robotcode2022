@@ -31,6 +31,8 @@ public final class Constants {
     {
         // port numbers for controller buttons
         public static final int rightTrigger = 8;
+        public static final int leftTrigger = 7;
+        
         public static final int y = 1;
         
         // to get left stick y-axis: -controller.getY()

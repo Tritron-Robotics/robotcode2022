@@ -9,9 +9,13 @@ public class ShootCommand extends CommandBase {
 
     public ShootingSubsystem subsystem;
     public BooleanSupplier shootInput;
+    public BooleanSupplier intakeInput;
 
-    public ShootCommand(ShootingSubsystem shootingSubsystem, BooleanSupplier shootInput) {
+
+    public ShootCommand(ShootingSubsystem shootingSubsystem, BooleanSupplier shootInput, BooleanSupplier intakeInput) {
         this.shootInput = shootInput;
+        this.intakeInput = intakeInput;
+        this.subsystem = shootingSubsystem;
         addRequirements(shootingSubsystem);
     }
 
@@ -25,12 +29,21 @@ public class ShootCommand extends CommandBase {
     @Override
     public void execute() 
     {
-        System.out.println("Shoot input: " + shootInput.getAsBoolean());
+        //System.out.println("Shoot input: " + shootInput.getAsBoolean());
        
         if (shootInput.getAsBoolean()) {
             subsystem.shoot(-1);
         } else {
             subsystem.shoot(0);
+        }
+
+        if(intakeInput.getAsBoolean())
+        {
+            subsystem.spinIntake(1);
+        }
+        else
+        {
+            subsystem.spinIntake(0);
         }
     }
 

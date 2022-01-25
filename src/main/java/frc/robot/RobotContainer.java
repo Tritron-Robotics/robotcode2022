@@ -42,7 +42,8 @@ public class RobotContainer {
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
-            () -> controller.getRawButton(Constants.Controller.rightTrigger));       
+            () -> controller.getRawButton(Constants.Controller.rightTrigger),
+            () -> controller.getRawButton(Constants.Controller.leftTrigger));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
         autoDrive = new AutoDrive(robotDrive);

@@ -27,12 +27,12 @@ public class ShootingSubsystem extends SubsystemBase {
     {
         topLeftShootMotor.setVoltage(-input * 8);
         topRightShootMotor.setVoltage(input * 8);
-        spinIntake();
+        //spinIntake(input);
     }
 
-    private void spinIntake()
+    public void spinIntake(double input)
     {
-        intakeMotor.setVoltage(5);
+        intakeMotor.setVoltage(input * 8); 
     }
 
     public void stopMotors()

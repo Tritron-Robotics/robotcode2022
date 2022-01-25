@@ -28,9 +28,9 @@ public class DriveTrain extends SubsystemBase {
     private final DifferentialDrive drive;
     //private final DifferentialDriveWheelSpeeds shootingDrive;
 
-    private final CANSparkMax intakeMotor;
-    private final CANSparkMax topLeftShootMotor;
-    private final CANSparkMax topRightShootMotor;
+    // private final CANSparkMax intakeMotor;
+    // private final CANSparkMax topLeftShootMotor;
+    // private final CANSparkMax topRightShootMotor;
 
     // Gyro.
     private final AHRS gyro;
@@ -47,9 +47,9 @@ public class DriveTrain extends SubsystemBase {
         rearRight = new CANSparkMax(2, MotorType.kBrushless); 
         frontRight = new CANSparkMax(4, MotorType.kBrushless); 
 
-        intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
-        topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
-        topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
+        // intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
+        // topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
+        // topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
 
         
 
@@ -74,12 +74,12 @@ public class DriveTrain extends SubsystemBase {
         drive.arcadeDrive(speed, rotation);
     }
 
-    public void shoot(double input)
-    {
-        topLeftShootMotor.setVoltage(-input * 8);
-        topRightShootMotor.setVoltage(input * 8);
-        intakeMotor.setVoltage(-input * 5);
-    }
+    // public void shoot(double input)
+    // {
+    //     topLeftShootMotor.setVoltage(-input * 8);
+    //     topRightShootMotor.setVoltage(input * 8);
+    //     intakeMotor.setVoltage(-input * 5);
+    // }
 
     // Drive forwards.
     public void driveForward(double speed) {
