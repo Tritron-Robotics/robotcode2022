@@ -14,9 +14,10 @@ public class AutoDrive extends CommandBase {
   private boolean isFinished = false;
   Timer timer;
 
-  /** Creates a new AutoDrive. */
+  /** Creates a new AutoDrive. 
+   * @param driveTrain The drive train subsystem.
+   */
   public AutoDrive(DriveTrain driveTrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrain;
     addRequirements(driveTrain);
     timer = new Timer();

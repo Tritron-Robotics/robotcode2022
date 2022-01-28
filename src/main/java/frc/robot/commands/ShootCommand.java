@@ -11,7 +11,12 @@ public class ShootCommand extends CommandBase {
     public BooleanSupplier shootInput;
     public BooleanSupplier intakeInput;
 
-
+    /**
+     * Constructor for the ShootCommand class
+     * @param shootingSubsystem Subsystem for shooting motors
+     * @param shootInput Boolean that determines whether we want to shoot or not
+     * @param intakeInput Boolean that determines if the intake motors are on or not
+     */
     public ShootCommand(ShootingSubsystem shootingSubsystem, BooleanSupplier shootInput, BooleanSupplier intakeInput) {
         this.shootInput = shootInput;
         this.intakeInput = intakeInput;

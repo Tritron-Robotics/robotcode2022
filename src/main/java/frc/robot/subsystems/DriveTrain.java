@@ -38,20 +38,16 @@ public class DriveTrain extends SubsystemBase {
     // Kinematics and Odometry.
     DifferentialDriveKinematics kinematics;
     DifferentialDriveOdometry odometry;
-    // Constructor, initialize motor controllers and groups.
 
+    /**
+     * Constructor, initialize motor controllers and groups.
+     */
     public DriveTrain() {
         // Initialize motor controllers.
         rearLeft = new CANSparkMax(1, MotorType.kBrushless); 
         frontLeft = new CANSparkMax(3, MotorType.kBrushless); 
         rearRight = new CANSparkMax(2, MotorType.kBrushless); 
         frontRight = new CANSparkMax(4, MotorType.kBrushless); 
-
-        // intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
-        // topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
-        // topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
-
-        
 
         // Synchronize left and right motors.
         frontLeft.follow(rearLeft, false); 
@@ -61,41 +57,19 @@ public class DriveTrain extends SubsystemBase {
 
         // Initialize drive configuration.
         drive = new DifferentialDrive(rearLeft, rearRight);
-        //shootingDrive = new DifferentialDriveWheelSpeeds();
-        
 
         gyro = new AHRS(SPI.Port.kMXP);
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d()); // Track Robot Position
     }
 
-    // Basic single joystick drive configuration.
-    public void arcadeDrive(double speed, double rotation) {
-        //System.out.println(speed);
-        drive.arcadeDrive(speed, rotation);
-    }
-
-    // public void shoot(double input)
-    // {
-    //     topLeftShootMotor.setVoltage(-input * 8);
-    //     topRightShootMotor.setVoltage(input * 8);
-    //     intakeMotor.setVoltage(-input * 5);
-    // }
-
-    // Drive forwards.
-    public void driveForward(double speed) {
-        drive.arcadeDrive(speed, 0.0);
-    }
-
-    // Tank drive control with voltage
+    /**
+     * Tank drive control with voltage
+     * @param leftVolts Voltage for rear left motors
+     * @param rightVolts Voltage for rear right motors
+     */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         rearLeft.setVoltage(leftVolts);
         rearRight.setVoltage(-rightVolts);
-        drive.feed();
-    }
-
-    public void leftMotor(double voltage)
-    {
-        rearLeft.setVoltage(voltage);
         drive.feed();
     }
 

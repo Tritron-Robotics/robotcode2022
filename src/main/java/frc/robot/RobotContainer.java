@@ -33,6 +33,9 @@ public class RobotContainer {
     private final AutoDrive autoDrive; 
     private final Joystick controller = new Joystick(0);
 
+    /**
+     * Initializes all robot commands.
+     */
     public RobotContainer() {
         Command driveCommand = new DriveCommand(
             robotDrive, 

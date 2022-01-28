@@ -23,6 +23,10 @@ public class ShootingSubsystem extends SubsystemBase {
         topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
     }
 
+    /**
+     * Shoots the ball
+     * @param input Controller input
+     */
     public void shoot(double input)
     {
         topLeftShootMotor.setVoltage(-input * 8);
@@ -30,9 +34,13 @@ public class ShootingSubsystem extends SubsystemBase {
         //spinIntake(input);
     }
 
+    /**
+     * Activates the intake system
+     * @param input Controller input
+     */
     public void spinIntake(double input)
     {
-        intakeMotor.setVoltage(input * 8); 
+        intakeMotor.setVoltage(input * 10); 
     }
 
     public void stopMotors()

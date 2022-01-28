@@ -16,10 +16,16 @@ public class DriveCommand extends CommandBase {
   public DoubleSupplier leftSpeed;
   public DoubleSupplier rightSpeed;
 
-  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftSpeed, DoubleSupplier rightSpeed) {
+  /**
+   * Constructor for the DriveCommand class
+   * @param subsystem Subsystem for drive train
+   * @param leftInput Left motors input
+   * @param rightInput Right motors input
+   */
+  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput) {
     driveTrain = subsystem;
-    this.leftSpeed = leftSpeed;
-    this.rightSpeed = rightSpeed;
+    this.leftSpeed = leftInput;
+    this.rightSpeed = rightInput;
     addRequirements(driveTrain);
   }
 
@@ -32,9 +38,15 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * 6.0, rightSpeed.getAsDouble() * 6.0);
+    tankDrive();
   }
 
+  /**
+   * Controls the motors in the tank drive style 
+   */
+  private void tankDrive(){
+    driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * 6.0, rightSpeed.getAsDouble() * 6.0);
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
