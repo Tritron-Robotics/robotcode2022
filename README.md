@@ -1,3 +1,5 @@
+[![CI](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/build_test.yaml/badge.svg)](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/build_test.yaml)
+
 # robotcode2022
 ## What the project does:
 This First Robotics project contains the code for Team 7323’s robot.
