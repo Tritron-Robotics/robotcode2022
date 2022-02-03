@@ -14,6 +14,22 @@ Once everything is setup, you can clone this repository, and open the folder in 
 ## Where users can get help with your project:
 <a href="https://first.wpi.edu/FRC/roborio/release/docs/java/index.html">FRC Java Documentation</a>
 
+## How to Contribute
+
+Typical `git` development involves the following steps:
+
+1. Clone the repository you want to change:
+    - `git clone` repository
+2. Checkout new branch to make your changes on:
+    - `git checkout -b  my-new-branch`
+    - usually the name of the branch should describe its purpose (i.e. `add-readme` would be a great branch name)
+3. Commit changes locally to your new branch:
+    - `git add .`
+    - `git commit -m "my really awesome feature"
+4. Push local changes to remote repositry (github):
+    - `git push`
+5. Make pull request on github:
+    - in the browser, go to `github.com` and go to the `Pull Request` tab
 
 ## Who maintains and contributes to the project:
 Andres Nedilskyj and Julian Tuazon
