@@ -17,9 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
+
   private Command m_autonomousCommand;
 
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -30,10 +28,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+  public void robotInit() { //issa robot, init?
     robotContainer = new RobotContainer();
   }
 
@@ -60,10 +55,7 @@ public class Robot extends TimedRobot {
    * chooser code above as well.
    */
   @Override
-  public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+  public void autonomousInit() { //it is autonomous, init?
 
     // m_autonomousCommand = robotContainer.getAutonomousCommand();
     // if (m_autonomousCommand != null) {

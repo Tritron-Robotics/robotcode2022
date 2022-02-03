@@ -30,18 +30,14 @@ public class AutoDrive extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public AutoDrive(DriveTrain driveTrain, DoubleSupplier testInput) {
+  public AutoDrive(DriveTrain driveTrain) {
     this.driveTrain = driveTrain;
-    this.testInput = testInput;
     limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
     tx = limelightNetworkTable.getEntry("tx");
     ty = limelightNetworkTable.getEntry("ty");
     ta = limelightNetworkTable.getEntry("ta");
 
-    
-
     timer = new Timer();
-    System.out.println("Auto Drive constructor");
     addRequirements(driveTrain);
   }
 
@@ -50,7 +46,7 @@ public class AutoDrive extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-    System.out.println("Initialize");
+
     driveTrain.arcadeDrive(0, 0);
     SmartDashboard.putNumber("ArcadeDriveY", 0);
     // while(timer.get() < 5.0) {
@@ -74,7 +70,6 @@ public class AutoDrive extends CommandBase {
     SmartDashboard.putNumber("LimelightArea", area);
 
 
-    System.out.println(x);
     if (x > 4)
     {
       driveTrain.arcadeDrive(0, 0.3);

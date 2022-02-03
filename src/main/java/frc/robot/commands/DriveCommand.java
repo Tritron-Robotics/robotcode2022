@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,6 +16,7 @@ public class DriveCommand extends CommandBase {
 
   public DoubleSupplier leftSpeed;
   public DoubleSupplier rightSpeed;
+  private BooleanSupplier partyMode;
 
   /**
    * Constructor for the DriveCommand class
@@ -22,10 +24,12 @@ public class DriveCommand extends CommandBase {
    * @param leftInput Left motors input
    * @param rightInput Right motors input
    */
-  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput) {
+  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput, BooleanSupplier partyModeInput) {
     driveTrain = subsystem;
     this.leftSpeed = leftInput;
     this.rightSpeed = rightInput;
+    this.partyMode = partyMode;
+    
     addRequirements(driveTrain);
   }
 
@@ -45,7 +49,7 @@ public class DriveCommand extends CommandBase {
    * Controls the motors in the tank drive style 
    */
   private void tankDrive(){
-    driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * 6.0, rightSpeed.getAsDouble() * 6.0);
+    driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * 4.0, rightSpeed.getAsDouble() * 4.0);
   }
   // Called once the command ends or is interrupted.
   @Override

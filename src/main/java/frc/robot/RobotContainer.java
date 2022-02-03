@@ -17,11 +17,14 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.SurpriseCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShootingSubsystem;
 
@@ -32,6 +35,8 @@ public class RobotContainer {
     private final ShootingSubsystem shootingSubsystem = new ShootingSubsystem();
     private final AutoDrive autoDrive; 
     private final Joystick controller = new Joystick(0);
+    private final SurpriseCommand surpriseCommand;
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     /**
      * Initializes all robot commands.
@@ -49,14 +54,19 @@ public class RobotContainer {
             () -> controller.getRawButton(Constants.Controller.leftTrigger));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoDrive = new AutoDrive(robotDrive, () -> -controller.getY());      
+        autoDrive = new AutoDrive(robotDrive);
+        surpriseCommand = new SurpriseCommand(robotDrive);
         
         robotDrive.setDefaultCommand(driveCommand);
 
+        autoChooser.setDefaultOption("Default Auto", autoDrive);
+        autoChooser.addOption("Surprise Auto", surpriseCommand);
+        SmartDashboard.putData(autoChooser);
     }
 
     public Command getAutonomousCommand() {
-        return autoDrive;
+        
+        return autoChooser.getSelected();
     }
 
     // Trajectory Generation
