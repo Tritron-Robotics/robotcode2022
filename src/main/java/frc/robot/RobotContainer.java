@@ -37,11 +37,11 @@ public class RobotContainer {
      * Initializes all robot commands.
      */
     public RobotContainer() {
+
         Command driveCommand = new DriveCommand(
             robotDrive, 
             () -> -controller.getY(), 
             () -> -controller.getRawAxis(3));
-        robotDrive.setDefaultCommand(driveCommand);
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
@@ -49,7 +49,10 @@ public class RobotContainer {
             () -> controller.getRawButton(Constants.Controller.leftTrigger));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoDrive = new AutoDrive(robotDrive);
+        autoDrive = new AutoDrive(robotDrive, () -> -controller.getY());      
+        
+        robotDrive.setDefaultCommand(driveCommand);
+
     }
 
     public Command getAutonomousCommand() {
@@ -57,7 +60,7 @@ public class RobotContainer {
     }
 
     // Trajectory Generation
-    public Command getOtherAuto() {
+    public Command getAutoTrajectoryFollowCommand() {
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(

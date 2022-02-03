@@ -62,8 +62,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
+    m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    // m_autonomousCommand = robotContainer.getAutonomousCommand();
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.schedule();
+    // }
   }
 
   /** This function is called periodically during autonomous. */
@@ -81,6 +86,7 @@ public class Robot extends TimedRobot {
     }
     */
     m_autonomousCommand = robotContainer.getAutonomousCommand();
+    //System.out.println("autonomous periodic");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -89,6 +95,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    System.out.print("Teleop");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
