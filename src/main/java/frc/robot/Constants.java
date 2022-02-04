@@ -7,6 +7,12 @@ public final class Constants {
     
     public static final class Kinematics
     {
+        public static final double tankDriveVolts = 4.0;
+        public static final double arcadeDriveVolts = 0.5;
+
+        public static final double partyModeVolts = 0.7;
+
+
         // PLACEHOLDERS: Use FRC Characterization Tool for values.
         public static final double ksVolts = 0.22;
         public static final double kvVoltSecondsPerMeter = 1.98;
@@ -34,6 +40,9 @@ public final class Constants {
         public static final int leftTrigger = 7;
         
         public static final int y = 1;
+        public static final int rightBumper = 6;
+        public static final int leftBumper = 5;
+
         
         // to get left stick y-axis: -controller.getY()
         // to get right stick y-axis:  -controller.getRawAxis(3)

@@ -69,45 +69,50 @@ public class SurpriseCommand extends CommandBase {
         if (timer.get() == 0.0)
         {
             timer.start();
-        }
-    
-        // if is tracking object for more than 2 seconds
-        if (timer.get() >= 2.0)
-        {
-            //System.out.println("Locked in");
-            
-            if (timer.get() >= 3.0)
-            {
-                driveTrain.arcadeDrive(0.3, 0);
-                System.out.println("forward");
-            } else if  (timer.get() >= 3.33)
-            {
-                driveTrain.arcadeDrive(-0.3, 0);  
-                System.out.println("backward");
-            } else if (timer.get() >= 3.66){
-                driveTrain.arcadeDrive(0.3, 0);
-                System.out.println("forward");
-
-            } else if (timer.get() >= 4.0)
-            {
-                driveTrain.arcadeDrive(-0.3, 0);
-                System.out.println("backward");
-
-            }  else if (timer.get() >= 5.5)
-            {
-                driveTrain.arcadeDrive(0.5, 0);
-                System.out.println("CHAAAARGE!!!!");
-
-            }  else if (timer.get() >= 7.5)
-            {
-                System.out.println("Done charging");
-            }
-        } else {
-            rotateToTrackedObject();
-        }
+            System.out.println("timer == 0");
+        }      
     } else {
         timer.reset();
+        System.out.println("not tracking object");
         findObjectToTrack();
+    }
+
+    // if is tracking object for more than 0.5 seconds
+    if (timer.get() > 0.0 && timer.get() < 0.5)
+    {         
+        System.out.println("Time: " + timer.get());
+        if (timer.get() > 0.5 && timer.get() < 3.0)
+        {
+            driveTrain.arcadeDrive(0.3, 0);
+            System.out.println("forward");
+        } else if  (timer.get() > 3.0 && timer.get() <= 3.33)
+        {
+            driveTrain.arcadeDrive(-0.3, 0);  
+            System.out.println("backward");
+        } else if (timer.get() > 3.33 && timer.get() <= 3.66){
+            driveTrain.arcadeDrive(0.3, 0);
+            System.out.println("forward");
+
+        } else if (timer.get() > 3.66 && timer.get() <= 4.0)
+        {
+            driveTrain.arcadeDrive(-0.3, 0);
+            System.out.println("backward");
+
+        }  else if (timer.get() > 4.5 && timer.get() <= 5.5)
+        {
+            driveTrain.arcadeDrive(0.5, 0);
+            System.out.println("CHAAAARGE!!!!");
+
+        }  else if (timer.get() >= 6.5)
+        {
+            System.out.println("Done charging");
+
+        } else {
+            System.out.println("Resting");
+        }
+        
+    } else {
+        rotateToTrackedObject();
     }
     
     // if (timer.get() < 5.0)
@@ -117,7 +122,6 @@ public class SurpriseCommand extends CommandBase {
     //     isFinished = true;
     // }
     //System.out.println("execute surprise");
-
   }
 
   void getLimelightData()

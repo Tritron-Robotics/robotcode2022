@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
@@ -46,18 +47,26 @@ public class RobotContainer {
         Command driveCommand = new DriveCommand(
             robotDrive, 
             () -> -controller.getY(), 
-            () -> -controller.getRawAxis(3));
+            () -> -controller.getRawAxis(3), 
+            () -> controller.getRawButton(Constants.Controller.leftBumper));
+
+        Command arcadeDriveCommand = new ArcadeDriveCommand(
+            robotDrive, 
+            () -> -controller.getY(), 
+            () -> controller.getX(), 
+            () -> controller.getRawButton(Constants.Controller.leftBumper));
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
-            () -> controller.getRawButton(Constants.Controller.rightTrigger),
-            () -> controller.getRawButton(Constants.Controller.leftTrigger));       
+            () -> controller.getRawButton(Constants.Controller.leftTrigger),
+            () -> controller.getRawButton(Constants.Controller.rightTrigger),          
+            () -> controller.getRawAxis(3));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
         autoDrive = new AutoDrive(robotDrive);
         surpriseCommand = new SurpriseCommand(robotDrive);
         
-        robotDrive.setDefaultCommand(driveCommand);
+        robotDrive.setDefaultCommand(arcadeDriveCommand);
 
         autoChooser.setDefaultOption("Default Auto", autoDrive);
         autoChooser.addOption("Surprise Auto", surpriseCommand);
