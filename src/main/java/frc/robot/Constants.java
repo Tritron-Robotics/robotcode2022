@@ -33,6 +33,17 @@ public final class Constants {
             new DifferentialDriveKinematics(kTrackwidthMeters);
     }
 
+    public static final class MotorConstants
+    {
+        public static final int rearLeftPort = 1;
+        public static final int frontLeftPort = 3;
+        public static final int rearRightPort = 2;
+        public static final int frontRightPort = 4;
+
+
+        
+    }
+
     public static final class Controller
     {
         // port numbers for controller buttons

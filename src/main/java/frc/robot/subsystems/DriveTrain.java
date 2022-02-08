@@ -21,9 +21,10 @@ import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;;
 
 /** Add your docs here. */
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends SubsystemBase implements AutoCloseable {
     // Motor controllers.
     private final CANSparkMax rearLeft;
     private final CANSparkMax frontLeft;
@@ -44,14 +45,14 @@ public class DriveTrain extends SubsystemBase {
     DifferentialDriveOdometry odometry;
 
     /**
-     * Constructor, initialize motor controllers and groups.
+     * Constructor, initialize motor controllers and groups.    
      */
     public DriveTrain() {
         // Initialize motor controllers.
-        rearLeft = new CANSparkMax(1, MotorType.kBrushless); 
-        frontLeft = new CANSparkMax(3, MotorType.kBrushless); 
-        rearRight = new CANSparkMax(2, MotorType.kBrushless); 
-        frontRight = new CANSparkMax(4, MotorType.kBrushless); 
+        rearLeft = new CANSparkMax(Constants.MotorConstants.rearLeftPort, MotorType.kBrushless); 
+        frontLeft = new CANSparkMax(Constants.MotorConstants.frontLeftPort, MotorType.kBrushless); 
+        rearRight = new CANSparkMax(Constants.MotorConstants.rearRightPort, MotorType.kBrushless); 
+        frontRight = new CANSparkMax(Constants.MotorConstants.frontRightPort, MotorType.kBrushless); 
 
         // Synchronize left and right motors.
         frontLeft.follow(rearLeft, false); 
@@ -154,5 +155,14 @@ public class DriveTrain extends SubsystemBase {
     // Get the turn rate of the robot in degrees per second.
     public double getTurnRate() {
         return -gyro.getRate();
+    }
+
+    @Override
+    public void close() throws Exception {
+        drive.close();
+        rearRight.close();
+        rearLeft.close();
+        frontLeft.close();
+        frontRight.close();
     }
 }
