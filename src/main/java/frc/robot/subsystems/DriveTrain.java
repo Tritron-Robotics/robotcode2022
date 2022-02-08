@@ -14,12 +14,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.SendableCameraWrapper;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;;
 
@@ -31,11 +27,6 @@ public class DriveTrain extends SubsystemBase implements AutoCloseable {
     private final CANSparkMax rearRight;
     private final CANSparkMax frontRight;
     private final DifferentialDrive drive;
-    //private final DifferentialDriveWheelSpeeds shootingDrive;
-
-    // private final CANSparkMax intakeMotor;
-    // private final CANSparkMax topLeftShootMotor;
-    // private final CANSparkMax topRightShootMotor;
 
     // Gyro.
     private final AHRS gyro;

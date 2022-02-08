@@ -26,7 +26,6 @@ public class ShootingSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Shooter speed", 8);
         SmartDashboard.putNumber("Intake speed", 7);
-
     }
 
     /**
@@ -37,7 +36,6 @@ public class ShootingSubsystem extends SubsystemBase {
     {
         topLeftShootMotor.setVoltage(input * SmartDashboard.getNumber("Shooter speed", 8));
         topRightShootMotor.setVoltage(-input * SmartDashboard.getNumber("Shooter speed", 8));
-        //spinIntake(input);
     }
 
     /**

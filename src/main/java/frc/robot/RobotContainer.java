@@ -29,7 +29,6 @@ import frc.robot.commands.SurpriseCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShootingSubsystem;
 
-/** Add your docs here. */
 public class RobotContainer {
     // Drivetrain subsystem.
     private final DriveTrain robotDrive = new DriveTrain();

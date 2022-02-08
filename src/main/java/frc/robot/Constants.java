@@ -40,9 +40,6 @@ public final class Constants {
         public static final int frontLeftPort = 3;
         public static final int rearRightPort = 2;
         public static final int frontRightPort = 4;
-
-
-        
     }
 
     public static final class Controller

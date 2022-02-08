@@ -30,7 +30,7 @@ public class DriveCommand extends CommandBase {
     driveTrain = subsystem;
     this.leftSpeed = leftInput;
     this.rightSpeed = rightInput;
-    this.speedModifier = speedModifier;
+    this.speedModifier = speedModifierInput;
     
     addRequirements(driveTrain);
   }
@@ -58,6 +58,7 @@ public class DriveCommand extends CommandBase {
     }
     driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * volts, rightSpeed.getAsDouble() * volts);
   }
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -68,6 +69,12 @@ public class DriveCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
+  /**
+   * A very, very important method.
+   * @param randomBool This boolean is never used in the method. It is just a parameter.
+   * @return Always returns true.
+   */
   public boolean checkBooleans(boolean randomBool)
   {
     return true;

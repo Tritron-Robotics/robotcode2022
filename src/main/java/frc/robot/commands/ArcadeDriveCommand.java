@@ -20,10 +20,10 @@ public class ArcadeDriveCommand extends CommandBase {
   private BooleanSupplier speedMofidier;
 
   /**
-   * Constructor for the DriveCommand class
-   * @param subsystem Subsystem for drive train
-   * @param forwardInput Left motors input
-   * @param rotInput Right motors input
+   * Constructor for the ArcadeDriveCommand class
+   * @param subsystem The DriveTrain subsystem
+   * @param forwardInput Forward input. Positive value will move the robot forward.
+   * @param rotInput Rotation input. Positive values will rotate the robot clockwise.
    * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
    */
   public ArcadeDriveCommand(DriveTrain subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier speedModifierInput) {
@@ -39,7 +39,6 @@ public class ArcadeDriveCommand extends CommandBase {
   @Override
   public void initialize() {
     driveTrain.arcadeDrive(0, 0);
-    //driveTrain.tankDriveVolts(0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,8 +54,6 @@ public class ArcadeDriveCommand extends CommandBase {
   void arcadeMode()
   {
     double volts = speedMofidier.getAsBoolean() ? Constants.Kinematics.arcadeDriveSpeedModifierVolts : Constants.Kinematics.arcadeDriveVolts;
-    
-    //driveTrain.arcadeDrive(forwardInput.getAsDouble() * multiplier, rotInput.getAsDouble() * multiplier);
     driveTrain.arcadeDrive(forwardInput.getAsDouble() * volts, rotInput.getAsDouble() * volts);
   }
 

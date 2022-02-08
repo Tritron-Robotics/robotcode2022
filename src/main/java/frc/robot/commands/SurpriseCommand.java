@@ -15,163 +15,132 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class SurpriseCommand extends CommandBase {
-// Declare Subsystems and other stuffies.
-  DriveTrain driveTrain;
-  private boolean isFinished = false;
-  private boolean isLockedIn = false;
-  Timer timer;
 
-  DoubleSupplier testInput;
+	DriveTrain driveTrain;
+	private boolean isFinished = false;
+	private boolean isLockedIn = false;
+	Timer timer;
 
-  NetworkTable limelightNetworkTable;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
-  NetworkTableEntry tv;
+	DoubleSupplier testInput;
 
-  private static final int buffer = 4;
+	NetworkTable limelightNetworkTable;
+	NetworkTableEntry tx;
+	NetworkTableEntry ty;
+	NetworkTableEntry ta;
+	NetworkTableEntry tv;
 
-  double x, y, area;
-  boolean isTrackingObject;
-  /** Creates a new AutoDrive. 
-   * @param driveTrain The drive train subsystem.
-   */
-  public SurpriseCommand(DriveTrain driveTrain) {
-    this.driveTrain = driveTrain;
-    limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
-    tx = limelightNetworkTable.getEntry("tx");
-    ty = limelightNetworkTable.getEntry("ty");
-    tv = limelightNetworkTable.getEntry("tv");
-    ta = limelightNetworkTable.getEntry("ta");  
+	private static final int buffer = 4;
 
-    timer = new Timer();
+	double x, y, area;
+	boolean isTrackingObject;
 
-    addRequirements(driveTrain);
-  }
+	/**
+	 * Creates a new AutoDrive.
+	 * 
+	 * @param driveTrain The drive train subsystem.
+	 */
+	public SurpriseCommand(DriveTrain driveTrain) {
+		this.driveTrain = driveTrain;
+		limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
+		tx = limelightNetworkTable.getEntry("tx");
+		ty = limelightNetworkTable.getEntry("ty");
+		tv = limelightNetworkTable.getEntry("tv");
+		ta = limelightNetworkTable.getEntry("ta");
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    timer.reset();
-    timer.start();
+		timer = new Timer();
 
-    driveTrain.arcadeDrive(0, 0);
-    SmartDashboard.putNumber("ArcadeDriveY", 0);
-  }
+		addRequirements(driveTrain);
+	}
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() 
-  {
-    getLimelightData();
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		timer.reset();
+		timer.start();
 
-    if (isTrackingObject)
-    {
-        if (timer.get() == 0.0)
-        {
-            timer.start();
-            isLockedIn = true;
-            System.out.println("timer == 0");
-        }      
-    } else if (!isLockedIn) {
-        timer.reset();
-        System.out.println("not tracking object");
-        findObjectToTrack();
-    }
+		driveTrain.arcadeDrive(0, 0);
+		SmartDashboard.putNumber("ArcadeDriveY", 0);
+	}
 
-    // if is tracking object for more than 0.5 seconds
-    if (timer.get() > 0.0)
-    {         
-        System.out.println("Time: " + timer.get());
-        driveTrain.arcadeDrive(0, 0);
-        if  (timer.get() > 0.5 && timer.get() <= 0.85)
-        {
-          driveTrain.arcadeDrive(-0.3, 0);  
-          System.out.println("backward");
-        } else if (timer.get() > 0.85 && timer.get() <= 1.15){
-          driveTrain.arcadeDrive(0.3, 0);
-          System.out.println("forward");
-        } else if (timer.get() > 1.15 && timer.get() <= 1.5)
-        {
-            driveTrain.arcadeDrive(-0.3, 0);
-            System.out.println("backward");
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		getLimelightData();
 
-        }  else if (timer.get() > 1.5 && timer.get() <= 2.5)
-        {
-            driveTrain.arcadeDrive(0.5, 0);
-            System.out.println("CHAAAARGE!!!!");
+		if (isTrackingObject) {
+			if (timer.get() == 0.0) {
+				timer.start();
+				isLockedIn = true;
+			}
+		} else if (!isLockedIn) {
+			timer.reset();
+			findObjectToTrack();
+		}
 
-        }  else if (timer.get() >= 2.5)
-        {
-            System.out.println("Done charging");
-            isLockedIn = false;
+		// if is tracking object for more than 0.5 seconds
+		if (timer.get() > 0.0) {
+			driveTrain.arcadeDrive(0, 0);
+			if (timer.get() > 0.5 && timer.get() <= 0.85) {
+				driveBackward(0.3);
+			} else if (timer.get() > 0.85 && timer.get() <= 1.15) {
+				driveForward(0.3);
+			} else if (timer.get() > 1.15 && timer.get() <= 1.5) {
+				driveBackward(0.3);
+			} else if (timer.get() > 1.5 && timer.get() <= 2.5) {
+				driveForward(0.5);
+			} else if (timer.get() >= 2.5) {
+				isLockedIn = false;
+			} else {
+				System.out.println("Resting");
+			}
+		} else {
+			rotateToTrackedObject();
+		}
+	}
 
-        } else {
-            System.out.println("Resting");
-        }
-        
-    } else {
-        rotateToTrackedObject();
-    }
-    
-    // if (timer.get() < 5.0)
-    // {
-    // //driveTrain.arcadeDrive(0.3, 0);
-    // } else {
-    //     isFinished = true;
-    // }
-    //System.out.println("execute surprise");
-  }
+	void getLimelightData() {
+		// read values periodically
+		x = tx.getDouble(0.0);
+		y = ty.getDouble(0.0);
+		area = ta.getDouble(0.0);
+		isTrackingObject = tv.getDouble(0.0) == 1.0 ? true : false;
 
-  void getLimelightData()
-  {
-    //read values periodically
-    x = tx.getDouble(0.0);
-    y = ty.getDouble(0.0);
-    area = ta.getDouble(0.0);
-    isTrackingObject = tv.getDouble(0.0) == 1.0 ? true : false;
+		// post to smart dashboard periodically
+		SmartDashboard.putNumber("LimelightX", x);
+		SmartDashboard.putNumber("LimelightY", y);
+		SmartDashboard.putNumber("LimelightArea", area);
+		SmartDashboard.putBoolean("IsTrackingObject", isTrackingObject);
+	}
 
-    //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-    SmartDashboard.putBoolean("IsTrackingObject", isTrackingObject);
+	void rotateToTrackedObject() {
+		if (x > buffer) {
+			driveTrain.arcadeDrive(0, 0.3);
+		} else if (x < -buffer) {
+			driveTrain.arcadeDrive(0, -0.3);
+		}
+	}
 
-  }
+	void findObjectToTrack() {
+		driveTrain.arcadeDrive(0, 0.3);
+	}
 
-  void rotateToTrackedObject()
-  {
-    if (x > buffer)
-    {
-      driveTrain.arcadeDrive(0, 0.3);
-      //System.out.println("Rotate clockwise");
-    } 
-    else if (x < -buffer)
-    {
-      driveTrain.arcadeDrive(0, -0.3);
-      //System.out.println("Rotate counter-clockwise");
-    }
-  }
+	void driveForward(double speed) {
+		driveTrain.arcadeDrive(speed, 0.0);
+	}
 
-  void findObjectToTrack()
-  {
-    driveTrain.arcadeDrive(0, 0.3);
-  }
+	void driveBackward(double speed) {
+		driveTrain.arcadeDrive(-speed, 0.0);
+	}
 
-  void CHARGE()
-  {
-    driveTrain.arcadeDrive(0.5, 0);
-  }
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		driveTrain.stopMotors();
+	}
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    driveTrain.stopMotors();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return isFinished;
-  }
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return isFinished;
+	}
 }
