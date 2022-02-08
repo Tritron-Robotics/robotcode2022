@@ -183,7 +183,7 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
                   java.util.function.DoubleSupplier&nbsp;rotInput,
                   java.util.function.BooleanSupplier&nbsp;speedModifierInput)</code></th>
 <td class="colLast">
-<div class="block">Constructor for the DriveCommand class</div>
+<div class="block">Constructor for the ArcadeDriveCommand class</div>
 </td>
 </tr>
 </table>
@@ -272,12 +272,12 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
                           java.util.function.DoubleSupplier&nbsp;forwardInput,
                           java.util.function.DoubleSupplier&nbsp;rotInput,
                           java.util.function.BooleanSupplier&nbsp;speedModifierInput)</pre>
-<div class="block">Constructor for the DriveCommand class</div>
+<div class="block">Constructor for the ArcadeDriveCommand class</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>subsystem</code> - Subsystem for drive train</dd>
-<dd><code>forwardInput</code> - Left motors input</dd>
-<dd><code>rotInput</code> - Right motors input</dd>
+<dd><code>subsystem</code> - The DriveTrain subsystem</dd>
+<dd><code>forwardInput</code> - Forward input. Positive value will move the robot forward.</dd>
+<dd><code>rotInput</code> - Rotation input. Positive values will rotate the robot clockwise.</dd>
 <dd><code>speedModifierInput</code> - Speed mofifier input. If this boolean is true, the speed of the motors will change.</dd>
 </dl>
 </li>
