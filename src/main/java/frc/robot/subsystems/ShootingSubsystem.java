@@ -19,10 +19,10 @@ public class ShootingSubsystem extends SubsystemBase {
     private CANSparkMax topRightShootMotor;
 
     // Initialize the motors
-    public ShootingSubsystem() {
-        intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
-        topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
-        topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
+    public ShootingSubsystem(CANSparkMax intakeMotor, CANSparkMax topLeftShootMotor, CANSparkMax topRightShootMotor) {
+        this.intakeMotor = intakeMotor;
+        this.topLeftShootMotor = topLeftShootMotor;
+        this.topRightShootMotor = topRightShootMotor;
 
         SmartDashboard.putNumber("Shooter speed", 8);
         SmartDashboard.putNumber("Intake speed", 7);

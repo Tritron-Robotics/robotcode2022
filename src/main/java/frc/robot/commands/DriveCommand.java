@@ -9,11 +9,11 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class DriveCommand extends CommandBase {
 
-  public DriveTrain driveTrain;
+  public DriveTrainSubsystem driveTrain;
 
   public DoubleSupplier leftSpeed;
   public DoubleSupplier rightSpeed;
@@ -26,7 +26,7 @@ public class DriveCommand extends CommandBase {
    * @param rightInput Right motors input
    * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
    */
-  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput, BooleanSupplier speedModifierInput) {
+  public DriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput, BooleanSupplier speedModifierInput) {
     driveTrain = subsystem;
     this.leftSpeed = leftInput;
     this.rightSpeed = rightInput;

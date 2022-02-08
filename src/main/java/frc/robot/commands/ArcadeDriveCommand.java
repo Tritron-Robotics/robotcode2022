@@ -9,11 +9,11 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class ArcadeDriveCommand extends CommandBase {
 
-  private DriveTrain driveTrain;
+  private DriveTrainSubsystem driveTrain;
 
   private DoubleSupplier forwardInput;
   private DoubleSupplier rotInput;
@@ -26,7 +26,7 @@ public class ArcadeDriveCommand extends CommandBase {
    * @param rotInput Rotation input. Positive values will rotate the robot clockwise.
    * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
    */
-  public ArcadeDriveCommand(DriveTrain subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier speedModifierInput) {
+  public ArcadeDriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier speedModifierInput) {
     driveTrain = subsystem;
     this.forwardInput = forwardInput;
     this.rotInput = rotInput;

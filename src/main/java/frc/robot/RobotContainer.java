@@ -6,6 +6,9 @@ package frc.robot;
 
 import java.util.List;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -22,27 +25,49 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.AutoDrive;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
-import frc.robot.commands.SurpriseCommand;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.BullCommand;
+import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 
 public class RobotContainer {
     // Drivetrain subsystem.
-    private final DriveTrain robotDrive = new DriveTrain();
-    private final ShootingSubsystem shootingSubsystem = new ShootingSubsystem();
-    private final AutoDrive autoDrive; 
+    private DriveTrainSubsystem robotDrive; 
+    private ShootingSubsystem shootingSubsystem;
+
     private final Joystick controller = new Joystick(0);
-    private final SurpriseCommand surpriseCommand;
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+    private AutoDriveCommand autoDrive; 
+    private BullCommand surpriseCommand;
 
     /**
      * Initializes all robot commands.
      */
     public RobotContainer() {
 
+        InitializeSubsystems();
+        AssignCommands();
+    }
+
+    private void InitializeSubsystems()
+    {
+        CANSparkMax rearLeft = new CANSparkMax(Constants.MotorConstants.rearLeftPort, MotorType.kBrushless); 
+        CANSparkMax frontLeft = new CANSparkMax(Constants.MotorConstants.frontLeftPort, MotorType.kBrushless); 
+        CANSparkMax rearRight = new CANSparkMax(Constants.MotorConstants.rearRightPort, MotorType.kBrushless); 
+        CANSparkMax frontRight = new CANSparkMax(Constants.MotorConstants.frontRightPort, MotorType.kBrushless); 
+        robotDrive = new DriveTrainSubsystem(rearLeft, frontLeft, rearRight, frontRight);
+
+        CANSparkMax intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
+        CANSparkMax topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
+        CANSparkMax topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
+        shootingSubsystem = new ShootingSubsystem(intakeMotor, topLeftShootMotor, topRightShootMotor);       
+    }
+
+    private void AssignCommands()
+    {
         Command driveCommand = new DriveCommand(
             robotDrive, 
             () -> -controller.getY(), 
@@ -62,8 +87,8 @@ public class RobotContainer {
             () -> controller.getRawAxis(3));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoDrive = new AutoDrive(robotDrive);
-        surpriseCommand = new SurpriseCommand(robotDrive);
+        autoDrive = new AutoDriveCommand(robotDrive);
+        surpriseCommand = new BullCommand(robotDrive);
         
         robotDrive.setDefaultCommand(arcadeDriveCommand);
 

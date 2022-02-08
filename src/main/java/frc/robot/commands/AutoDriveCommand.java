@@ -12,10 +12,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class AutoDrive extends CommandBase {
-  DriveTrain driveTrain;
+public class AutoDriveCommand extends CommandBase {
+  DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
 
@@ -29,7 +29,7 @@ public class AutoDrive extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public AutoDrive(DriveTrain driveTrain) {
+  public AutoDriveCommand(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
     tx = limelightNetworkTable.getEntry("tx");

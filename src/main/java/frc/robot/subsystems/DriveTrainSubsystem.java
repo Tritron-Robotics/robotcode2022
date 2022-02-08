@@ -14,13 +14,14 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;;
 
 /** Add your docs here. */
-public class DriveTrain extends SubsystemBase implements AutoCloseable {
+public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable {
     // Motor controllers.
     private final CANSparkMax rearLeft;
     private final CANSparkMax frontLeft;
@@ -38,12 +39,12 @@ public class DriveTrain extends SubsystemBase implements AutoCloseable {
     /**
      * Constructor, initialize motor controllers and groups.    
      */
-    public DriveTrain() {
+    public DriveTrainSubsystem(CANSparkMax rearLeft, CANSparkMax frontLeft, CANSparkMax rearRight, CANSparkMax frontRight) {
         // Initialize motor controllers.
-        rearLeft = new CANSparkMax(Constants.MotorConstants.rearLeftPort, MotorType.kBrushless); 
-        frontLeft = new CANSparkMax(Constants.MotorConstants.frontLeftPort, MotorType.kBrushless); 
-        rearRight = new CANSparkMax(Constants.MotorConstants.rearRightPort, MotorType.kBrushless); 
-        frontRight = new CANSparkMax(Constants.MotorConstants.frontRightPort, MotorType.kBrushless); 
+        this.rearLeft = rearLeft; 
+        this.frontLeft = frontLeft;
+        this.rearRight = rearRight;
+        this.frontRight = frontRight;
 
         // Synchronize left and right motors.
         frontLeft.follow(rearLeft, false); 

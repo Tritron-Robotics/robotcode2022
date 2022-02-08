@@ -37,10 +37,6 @@ deploy {
     }
 }
 
-test {
-    useJUnit()
-}
-
 def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 
 // Set to true to use debug for JNI.
@@ -48,6 +44,10 @@ wpi.java.debugJni = false
 
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
+
+test {
+   useJUnit()
+}
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
@@ -69,7 +69,8 @@ dependencies {
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
 
-     testImplementation('junit:junit:4.13')
+    testImplementation('junit:junit:4.13')
+    testImplementation("org.mockito:mockito-core:2.+")
 }
 
 // Simulation configuration (e.g. environment variables).
