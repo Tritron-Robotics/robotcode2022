@@ -21,7 +21,7 @@ jobs:
         # this command generates the javadocs
         run: ./gradlew javadoc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.2.3
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           BRANCH: gh-pages
           # if true, this will delete files that are no longer in the current version of the branch
