@@ -17,19 +17,20 @@ public class ArcadeDriveCommand extends CommandBase {
 
   private DoubleSupplier forwardInput;
   private DoubleSupplier rotInput;
-  private BooleanSupplier partyMode;
+  private BooleanSupplier speedMofidier;
 
   /**
    * Constructor for the DriveCommand class
    * @param subsystem Subsystem for drive train
-   * @param leftInput Left motors input
-   * @param rightInput Right motors input
+   * @param forwardInput Left motors input
+   * @param rotInput Right motors input
+   * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
    */
-  public ArcadeDriveCommand(DriveTrain subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier partyModeInput) {
+  public ArcadeDriveCommand(DriveTrain subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier speedModifierInput) {
     driveTrain = subsystem;
     this.forwardInput = forwardInput;
     this.rotInput = rotInput;
-    this.partyMode = partyModeInput;
+    this.speedMofidier = speedModifierInput;
     
     addRequirements(driveTrain);
   }
@@ -53,7 +54,7 @@ public class ArcadeDriveCommand extends CommandBase {
    */
   void arcadeMode()
   {
-    double volts = partyMode.getAsBoolean() ? Constants.Kinematics.partyModeVolts : Constants.Kinematics.arcadeDriveVolts;
+    double volts = speedMofidier.getAsBoolean() ? Constants.Kinematics.arcadeDriveSpeedModifierVolts : Constants.Kinematics.arcadeDriveVolts;
     
     //driveTrain.arcadeDrive(forwardInput.getAsDouble() * multiplier, rotInput.getAsDouble() * multiplier);
     driveTrain.arcadeDrive(forwardInput.getAsDouble() * volts, rotInput.getAsDouble() * volts);

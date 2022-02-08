@@ -10,7 +10,8 @@ public final class Constants {
         public static final double tankDriveVolts = 4.0;
         public static final double arcadeDriveVolts = 0.5;
 
-        public static final double partyModeVolts = 0.7;
+        public static final double arcadeDriveSpeedModifierVolts = 0.7;
+        public static final double tankDriveSpeedModifierVolts = 0.9;
 
 
         // PLACEHOLDERS: Use FRC Characterization Tool for values.
