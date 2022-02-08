@@ -17,11 +17,15 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutoDrive;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.SurpriseCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ShootingSubsystem;
 
@@ -32,32 +36,50 @@ public class RobotContainer {
     private final ShootingSubsystem shootingSubsystem = new ShootingSubsystem();
     private final AutoDrive autoDrive; 
     private final Joystick controller = new Joystick(0);
+    private final SurpriseCommand surpriseCommand;
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     /**
      * Initializes all robot commands.
      */
     public RobotContainer() {
+
         Command driveCommand = new DriveCommand(
             robotDrive, 
             () -> -controller.getY(), 
-            () -> -controller.getRawAxis(3));
-        robotDrive.setDefaultCommand(driveCommand);
+            () -> -controller.getRawAxis(3), 
+            () -> controller.getRawButton(Constants.Controller.leftBumper));
+
+        Command arcadeDriveCommand = new ArcadeDriveCommand(
+            robotDrive, 
+            () -> -controller.getY(), 
+            () -> controller.getX(), 
+            () -> controller.getRawButton(Constants.Controller.leftBumper));
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
-            () -> controller.getRawButton(Constants.Controller.rightTrigger),
-            () -> controller.getRawButton(Constants.Controller.leftTrigger));       
+            () -> controller.getRawButton(Constants.Controller.leftTrigger),
+            () -> controller.getRawButton(Constants.Controller.rightTrigger),          
+            () -> controller.getRawAxis(3));       
         shootingSubsystem.setDefaultCommand(shootCommand);
 
         autoDrive = new AutoDrive(robotDrive);
+        surpriseCommand = new SurpriseCommand(robotDrive);
+        
+        robotDrive.setDefaultCommand(arcadeDriveCommand);
+
+        autoChooser.setDefaultOption("Default Auto", autoDrive);
+        autoChooser.addOption("Surprise Auto", surpriseCommand);
+        SmartDashboard.putData(autoChooser);
     }
 
     public Command getAutonomousCommand() {
-        return autoDrive;
+        
+        return autoChooser.getSelected();
     }
 
     // Trajectory Generation
-    public Command getOtherAuto() {
+    public Command getAutoTrajectoryFollowCommand() {
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(

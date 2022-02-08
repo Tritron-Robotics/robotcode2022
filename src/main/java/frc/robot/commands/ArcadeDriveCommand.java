@@ -8,14 +8,15 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
-public class DriveCommand extends CommandBase {
+public class ArcadeDriveCommand extends CommandBase {
 
-  public DriveTrain driveTrain;
+  private DriveTrain driveTrain;
 
-  public DoubleSupplier leftSpeed;
-  public DoubleSupplier rightSpeed;
+  private DoubleSupplier forwardInput;
+  private DoubleSupplier rotInput;
   private BooleanSupplier partyMode;
 
   /**
@@ -24,11 +25,11 @@ public class DriveCommand extends CommandBase {
    * @param leftInput Left motors input
    * @param rightInput Right motors input
    */
-  public DriveCommand(DriveTrain subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput, BooleanSupplier partyModeInput) {
+  public ArcadeDriveCommand(DriveTrain subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier partyModeInput) {
     driveTrain = subsystem;
-    this.leftSpeed = leftInput;
-    this.rightSpeed = rightInput;
-    this.partyMode = partyMode;
+    this.forwardInput = forwardInput;
+    this.rotInput = rotInput;
+    this.partyMode = partyModeInput;
     
     addRequirements(driveTrain);
   }
@@ -36,21 +37,28 @@ public class DriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveTrain.tankDriveVolts(0, 0);
+    driveTrain.arcadeDrive(0, 0);
+    //driveTrain.tankDriveVolts(0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    tankDrive();
+    //System.out.println("Execute arcade drive");
+    arcadeMode();
+  }
+  
+  /**
+   * Controls the motors in arcade drive style
+   */
+  void arcadeMode()
+  {
+    double volts = partyMode.getAsBoolean() ? Constants.Kinematics.partyModeVolts : Constants.Kinematics.arcadeDriveVolts;
+    
+    //driveTrain.arcadeDrive(forwardInput.getAsDouble() * multiplier, rotInput.getAsDouble() * multiplier);
+    driveTrain.arcadeDrive(forwardInput.getAsDouble() * volts, rotInput.getAsDouble() * volts);
   }
 
-  /**
-   * Controls the motors in the tank drive style 
-   */
-  private void tankDrive(){
-    driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * 4.0, rightSpeed.getAsDouble() * 4.0);
-  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -60,9 +68,5 @@ public class DriveCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-  }
-  public boolean checkBooleans(boolean randomBool)
-  {
-    return true;
   }
 }

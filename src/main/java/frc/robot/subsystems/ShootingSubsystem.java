@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** Subsystem for the motors that shoot the ball */
@@ -21,6 +23,10 @@ public class ShootingSubsystem extends SubsystemBase {
         intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
         topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
         topRightShootMotor = new CANSparkMax(7, MotorType.kBrushed);
+
+        SmartDashboard.putNumber("Shooter speed", 8);
+        SmartDashboard.putNumber("Intake speed", 7);
+
     }
 
     /**
@@ -29,8 +35,8 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void shoot(double input)
     {
-        topLeftShootMotor.setVoltage(-input * 8);
-        topRightShootMotor.setVoltage(input * 8);
+        topLeftShootMotor.setVoltage(input * SmartDashboard.getNumber("Shooter speed", 8));
+        topRightShootMotor.setVoltage(-input * SmartDashboard.getNumber("Shooter speed", 8));
         //spinIntake(input);
     }
 
@@ -40,7 +46,7 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void spinIntake(double input)
     {
-        intakeMotor.setVoltage(input * 10); 
+        intakeMotor.setVoltage(input * SmartDashboard.getNumber("Intake speed", 7)); 
     }
 
     public void stopMotors()

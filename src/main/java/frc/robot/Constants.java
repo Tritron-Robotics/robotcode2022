@@ -7,6 +7,12 @@ public final class Constants {
     
     public static final class Kinematics
     {
+        public static final double tankDriveVolts = 4.0;
+        public static final double arcadeDriveVolts = 0.5;
+
+        public static final double partyModeVolts = 0.7;
+
+
         // PLACEHOLDERS: Use FRC Characterization Tool for values.
         public static final double ksVolts = 0.22;
         public static final double kvVoltSecondsPerMeter = 1.98;
@@ -27,6 +33,17 @@ public final class Constants {
             new DifferentialDriveKinematics(kTrackwidthMeters);
     }
 
+    public static final class MotorConstants
+    {
+        public static final int rearLeftPort = 1;
+        public static final int frontLeftPort = 3;
+        public static final int rearRightPort = 2;
+        public static final int frontRightPort = 4;
+
+
+        
+    }
+
     public static final class Controller
     {
         // port numbers for controller buttons
@@ -34,6 +51,9 @@ public final class Constants {
         public static final int leftTrigger = 7;
         
         public static final int y = 1;
+        public static final int rightBumper = 6;
+        public static final int leftBumper = 5;
+
         
         // to get left stick y-axis: -controller.getY()
         // to get right stick y-axis:  -controller.getRawAxis(3)
