@@ -37,8 +37,6 @@ public class ShootCommand extends CommandBase {
     @Override
     public void execute() 
     {
-        //System.out.println("Shoot input: " + shootInput.getAsBoolean());
-       
         if (shootInput.getAsBoolean()) {
             subsystem.shoot(-1);
         } else {

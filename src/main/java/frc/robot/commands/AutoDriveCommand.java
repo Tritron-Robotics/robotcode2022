@@ -12,11 +12,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class AutoDrive extends CommandBase {
-  // Declare Subsystems and other stuffies.
-  DriveTrain driveTrain;
+public class AutoDriveCommand extends CommandBase {
+  DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
 
@@ -30,7 +29,7 @@ public class AutoDrive extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public AutoDrive(DriveTrain driveTrain) {
+  public AutoDriveCommand(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
     tx = limelightNetworkTable.getEntry("tx");
@@ -49,10 +48,6 @@ public class AutoDrive extends CommandBase {
 
     driveTrain.arcadeDrive(0, 0);
     SmartDashboard.putNumber("ArcadeDriveY", 0);
-    // while(timer.get() < 5.0) {
-    //   driveTrain.arcadeDrive(testInput.getAsDouble(), 0);
-    // }
-    // isFinished = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -73,13 +68,10 @@ public class AutoDrive extends CommandBase {
     if (x > 4)
     {
       driveTrain.arcadeDrive(0, 0.3);
-      //System.out.println("Rotate clockwise");
     } 
     else if (x < -4)
     {
       driveTrain.arcadeDrive(0, -0.3);
-      //System.out.println("Rotate counter-clockwise");
-
     }
   }
 

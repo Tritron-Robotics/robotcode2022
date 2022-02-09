@@ -3,7 +3,7 @@ name: Deploy Javadoc
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   publish:
@@ -17,11 +17,13 @@ jobs:
           java-version: 11
           java-package: jdk+fx
       - name: Generate Javadoc
-        run: ./gradlew aggregateJavadocs
+        # this command generates the javadocs
+        run: ./gradlew javadoc
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.5.9
+        uses: JamesIves/github-pages-deploy-action@v4.2.3
         with:
           BRANCH: gh-pages
+          # if true, this will delete files that are no longer in the current version of the branch
           CLEAN: true
           FOLDER: build/docs/javadoc
           TARGET_FOLDER: javadoc
