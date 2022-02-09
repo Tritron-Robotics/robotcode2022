@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;;
 
 /** Add your docs here. */
-public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable {
+public class DriveTrainSubsystem extends SubsystemBase{
     // Motor controllers.
     private final CANSparkMax rearLeft;
     private final CANSparkMax frontLeft;
@@ -147,14 +147,5 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
     // Get the turn rate of the robot in degrees per second.
     public double getTurnRate() {
         return -gyro.getRate();
-    }
-
-    @Override
-    public void close() throws Exception {
-        drive.close();
-        rearRight.close();
-        rearLeft.close();
-        frontLeft.close();
-        frontRight.close();
     }
 }
