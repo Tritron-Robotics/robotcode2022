@@ -1,10 +1,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class ParallelCommands extends ParallelCommandGroup {
-    public ParallelCommands(DriveTrainSubsystem driveTrainSubsystem)
+public class SequentialCommand extends SequentialCommandGroup {
+    public SequentialCommand(DriveTrainSubsystem driveTrainSubsystem)
     {
         AutoDriveCommand autoDriveCommand = new AutoDriveCommand(driveTrainSubsystem);
         addCommands(

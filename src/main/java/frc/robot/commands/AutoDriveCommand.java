@@ -62,6 +62,12 @@ public class AutoDriveCommand extends CommandBase {
     if (!shouldTrack)
       return;
     
+    if (!limelight.getIsTracking())
+    {
+      LookForObject();
+      return;
+    }
+
     double error = limelight.getX();
 
     double steering_adjust = 0.0;
@@ -77,6 +83,11 @@ public class AutoDriveCommand extends CommandBase {
 
     System.out.println("Steering adjust: " + steering_adjust);
     driveTrain.arcadeDrive(0.0, steering_adjust);
+  }
+
+  void LookForObject()
+  {
+    driveTrain.arcadeDrive(0.0, 0.3);
   }
 
   public void SetShouldTrack(boolean shouldTrack)
