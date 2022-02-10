@@ -12,22 +12,19 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class BullCommand extends CommandBase {
 
 	DriveTrainSubsystem driveTrain;
+	AutoDriveCommand autoDriveCommand;
 	private boolean isFinished = false;
 	private boolean isLockedIn = false;
 	Timer timer;
 
 	DoubleSupplier testInput;
-
-	NetworkTable limelightNetworkTable;
-	NetworkTableEntry tx;
-	NetworkTableEntry ty;
-	NetworkTableEntry ta;
-	NetworkTableEntry tv;
+	LimelightRunner limelight;
 
 	private static final int buffer = 4;
 
@@ -39,13 +36,10 @@ public class BullCommand extends CommandBase {
 	 * 
 	 * @param driveTrain The drive train subsystem.
 	 */
-	public BullCommand(DriveTrainSubsystem driveTrain) {
+	public BullCommand(DriveTrainSubsystem driveTrain, AutoDriveCommand autoDriveCommand) {
 		this.driveTrain = driveTrain;
-		limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
-		tx = limelightNetworkTable.getEntry("tx");
-		ty = limelightNetworkTable.getEntry("ty");
-		tv = limelightNetworkTable.getEntry("tv");
-		ta = limelightNetworkTable.getEntry("ta");
+		this.autoDriveCommand = autoDriveCommand;
+		limelight = LimelightRunner.getInstance();
 
 		timer = new Timer();
 
@@ -65,20 +59,35 @@ public class BullCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		getLimelightData();
+		x = limelight.getX();
+		y = limelight.getY();
+		area = limelight.getArea();
+		isTrackingObject = limelight.getIsTracking();
 
-		if (isTrackingObject) {
+		// if (isTrackingObject) {
+		// 	if (timer.get() == 0.0) {
+		// 		timer.start();
+		// 		isLockedIn = true;
+		// 	}
+		// } else if (!isLockedIn) {
+		// 	timer.reset();
+		// 	findObjectToTrack();
+		// }
+
+		if (limelight.getIsTracking())
+		{
 			if (timer.get() == 0.0) {
 				timer.start();
 				isLockedIn = true;
 			}
 		} else if (!isLockedIn) {
 			timer.reset();
-			findObjectToTrack();
+			autoDriveCommand.SetShouldTrack(true);
 		}
 
 		// if is tracking object for more than 0.5 seconds
 		if (timer.get() > 0.0) {
+			autoDriveCommand.SetShouldTrack(false);
 			driveTrain.arcadeDrive(0, 0);
 			if (timer.get() > 0.5 && timer.get() <= 0.85) {
 				driveBackward(0.3);
@@ -94,29 +103,7 @@ public class BullCommand extends CommandBase {
 				System.out.println("Resting");
 			}
 		} else {
-			rotateToTrackedObject();
-		}
-	}
-
-	void getLimelightData() {
-		// read values periodically
-		x = tx.getDouble(0.0);
-		y = ty.getDouble(0.0);
-		area = ta.getDouble(0.0);
-		isTrackingObject = tv.getDouble(0.0) == 1.0 ? true : false;
-
-		// post to smart dashboard periodically
-		SmartDashboard.putNumber("LimelightX", x);
-		SmartDashboard.putNumber("LimelightY", y);
-		SmartDashboard.putNumber("LimelightArea", area);
-		SmartDashboard.putBoolean("IsTrackingObject", isTrackingObject);
-	}
-
-	void rotateToTrackedObject() {
-		if (x > buffer) {
-			driveTrain.arcadeDrive(0, 0.3);
-		} else if (x < -buffer) {
-			driveTrain.arcadeDrive(0, -0.3);
+			autoDriveCommand.SetShouldTrack(true);
 		}
 	}
 

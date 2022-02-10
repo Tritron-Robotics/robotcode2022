@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ParallelCommands;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.BullCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -41,6 +42,7 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private AutoDriveCommand autoDrive; 
+    private ParallelCommands parallelCommands;
     private BullCommand surpriseCommand;
 
     /**
@@ -85,15 +87,18 @@ public class RobotContainer {
             () -> controller.getRawButton(Constants.Controller.leftTrigger),
             () -> controller.getRawButton(Constants.Controller.rightTrigger),          
             () -> controller.getRawAxis(3));       
+
+        
         shootingSubsystem.setDefaultCommand(shootCommand);
 
         autoDrive = new AutoDriveCommand(robotDrive);
-        surpriseCommand = new BullCommand(robotDrive);
+        parallelCommands = new ParallelCommands(robotDrive);
+        //surpriseCommand = new BullCommand(robotDrive);
         
         robotDrive.setDefaultCommand(arcadeDriveCommand);
 
         autoChooser.setDefaultOption("Default Auto", autoDrive);
-        autoChooser.addOption("Surprise Auto", surpriseCommand);
+        autoChooser.addOption("Surprise Auto", parallelCommands);
         SmartDashboard.putData(autoChooser);
     }
 
