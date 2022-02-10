@@ -64,7 +64,7 @@ public class LimelightRunner {
     return a;
   }
 
-  public boolean isTracking()
+  public boolean getIsTracking()
   {
     return (tv.getDouble(0.0) == 1.0 ? true : false);
   }
