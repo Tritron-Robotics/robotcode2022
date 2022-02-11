@@ -1,5 +1,4 @@
 [![CI](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/build_test.yaml/badge.svg)](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/build_test.yaml)
-[![UnitTests](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/unit_tests.yaml/badge.svg?branch=main)](https://github.com/Tritron-Robotics/robotcode2022/actions/workflows/unit_tests.yaml)
 
 # robotcode2022
 ## What the project does:
