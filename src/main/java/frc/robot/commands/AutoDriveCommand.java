@@ -23,7 +23,7 @@ public class AutoDriveCommand extends CommandBase {
   DoubleSupplier testInput;
 
   double turnConstant = 0.05;
-  double min_turn = 0.01;
+  double min_turn = 0.01;   
 
   NetworkTable limelightNetworkTable;
   NetworkTableEntry tx;
