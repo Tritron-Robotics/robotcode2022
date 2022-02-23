@@ -4,14 +4,19 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-    
+
     public static final class Kinematics
     {
-        public static final double tankDriveVolts = 4.0;
-        public static final double arcadeDriveVolts = 0.5;
+        public static final double tankDriveVoltage = 4.0;
+        public static final double arcadeDriveVoltage = 0.5;
 
-        public static final double arcadeDriveSpeedModifierVolts = 0.7;
-        public static final double tankDriveSpeedModifierVolts = 0.9;
+        public static final double arcadeDriveSpeedModifierVoltage = 0.7;
+        public static final double tankDriveSpeedModifierVoltage = 0.9;
+
+        public static final double fastShootVoltage = 8.25;
+        public static final double slowShootVoltage = 5.5;
+
+        public static final double intakeVoltage = 5;
 
 
         // PLACEHOLDERS: Use FRC Characterization Tool for values.

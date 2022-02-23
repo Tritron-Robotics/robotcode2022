@@ -4,15 +4,22 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
+import java.util.List;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.LimelightRunner;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoDriveCommand extends CommandBase {
@@ -20,26 +27,61 @@ public class AutoDriveCommand extends CommandBase {
   private boolean isFinished = false;
   Timer timer;
 
-  DoubleSupplier testInput;
+  // Create a voltage constraint to ensure we don't accelerate too fast
+  DifferentialDriveVoltageConstraint autoVoltageConstraint =
+  new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
+                              Constants.Kinematics.kvVoltSecondsPerMeter,
+                              Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+      Constants.Kinematics.kDriveKinematics,
+      10);
 
-  double turnConstant = 0.05;
-  double min_turn = 0.01;   
+  // Create config for trajectory
+  TrajectoryConfig config =
+      new TrajectoryConfig(Constants.Kinematics.kMaxSpeedMetersPerSecond,
+                          Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
+          // Add kinematics to ensure max speed is actually obeyed
+          .setKinematics(Constants.Kinematics.kDriveKinematics)
+          // Apply the voltage constraint
+          .addConstraint(autoVoltageConstraint);
 
-  NetworkTable limelightNetworkTable;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
+  // An example trajectory to follow.  All units in meters.
+  Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+      // Start at the origin facing the +X direction
+      new Pose2d(0, 0, new Rotation2d(0)),
+      // Pass through these two interior waypoints, making an 's' curve path
+      List.of(
+          new Translation2d(1, 1),
+          new Translation2d(2, -1)
+      ),
+      // End 3 meters straight ahead of where we started, facing forward
+      new Pose2d(3, 0, new Rotation2d(0)),
+      // Pass config
+      config
+  );
 
-  LimelightRunner limelight;
-
-  boolean shouldTrack = true;
+  RamseteCommand ramseteCommand = new RamseteCommand(
+      exampleTrajectory,
+      driveTrain::getPose,
+      new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
+      new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
+                                 Constants.Kinematics.kvVoltSecondsPerMeter,
+                                 Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+      Constants.Kinematics.kDriveKinematics,
+      driveTrain::getWheelSpeeds,
+      new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
+      new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
+      // RamseteCommand passes volts to the callback
+      driveTrain::tankDriveVolts,
+      driveTrain
+  );       
+  
 
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
   public AutoDriveCommand(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
-    limelight = LimelightRunner.getInstance();
 
     timer = new Timer();
     addRequirements(driveTrain);
@@ -50,49 +92,18 @@ public class AutoDriveCommand extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-
+    // Reset odometry to the starting pose of the trajectory.
+    driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
     driveTrain.arcadeDrive(0, 0);
-    SmartDashboard.putNumber("ArcadeDriveY", 0);
+
+    ramseteCommand.schedule();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    if (!shouldTrack)
-      return;
     
-    if (!limelight.getIsTracking())
-    {
-      LookForObject();
-      return;
-    }
-
-    double error = limelight.getX();
-
-    double steering_adjust = 0.0;
-
-    if (error > 1.0)
-    {
-      steering_adjust = turnConstant * error - min_turn;
-    }
-    else if (error < 1.0)
-    {
-      steering_adjust = turnConstant * error + min_turn;
-    }
-
-    System.out.println("Steering adjust: " + steering_adjust);
-    driveTrain.arcadeDrive(0.0, steering_adjust);
-  }
-
-  void LookForObject()
-  {
-    driveTrain.arcadeDrive(0.0, 0.3);
-  }
-
-  public void SetShouldTrack(boolean shouldTrack)
-  {
-    this.shouldTrack = shouldTrack;
   }
 
   // Called once the command ends or is interrupted.

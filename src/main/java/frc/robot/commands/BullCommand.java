@@ -18,7 +18,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 public class BullCommand extends CommandBase {
 
 	DriveTrainSubsystem driveTrain;
-	AutoDriveCommand autoDriveCommand;
+	TrackObjectCommand autoDriveCommand;
 	private boolean isFinished = false;
 	private boolean isLockedIn = false;
 	Timer timer;
@@ -36,7 +36,7 @@ public class BullCommand extends CommandBase {
 	 * 
 	 * @param driveTrain The drive train subsystem.
 	 */
-	public BullCommand(DriveTrainSubsystem driveTrain, AutoDriveCommand autoDriveCommand) {
+	public BullCommand(DriveTrainSubsystem driveTrain, TrackObjectCommand autoDriveCommand) {
 		this.driveTrain = driveTrain;
 		this.autoDriveCommand = autoDriveCommand;
 		limelight = LimelightRunner.getInstance();

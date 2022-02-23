@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutoDriveCommand;
+import frc.robot.commands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SequentialCommand;
 import frc.robot.commands.ShootCommand;
@@ -42,8 +43,6 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private AutoDriveCommand autoDrive; 
-    private SequentialCommand parallelCommands;
-    private BullCommand surpriseCommand;
 
     /**
      * Initializes all robot commands.
@@ -54,6 +53,10 @@ public class RobotContainer {
         AssignCommands();
     }
 
+    
+    /**
+     * Initializes the subsystems. 
+     */
     private void InitializeSubsystems()
     {
         CANSparkMax rearLeft = new CANSparkMax(Constants.MotorConstants.rearLeftPort, MotorType.kBrushless); 
@@ -68,14 +71,12 @@ public class RobotContainer {
         shootingSubsystem = new ShootingSubsystem(intakeMotor, topLeftShootMotor, topRightShootMotor);       
     }
 
+    
+    /**
+     * Assigns the commands for driving and shooting.
+     */
     private void AssignCommands()
     {
-        Command driveCommand = new DriveCommand(
-            robotDrive, 
-            () -> -controller.getY(), 
-            () -> -controller.getRawAxis(3), 
-            () -> controller.getRawButton(Constants.Controller.leftBumper));
-
         Command arcadeDriveCommand = new ArcadeDriveCommand(
             robotDrive, 
             () -> -controller.getY(), 
@@ -87,21 +88,21 @@ public class RobotContainer {
             () -> controller.getRawButton(Constants.Controller.leftTrigger),
             () -> controller.getRawButton(Constants.Controller.rightTrigger),          
             () -> controller.getRawAxis(3));       
-
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
         autoDrive = new AutoDriveCommand(robotDrive);
-        parallelCommands = new SequentialCommand(robotDrive);
-        //surpriseCommand = new BullCommand(robotDrive);
         
         robotDrive.setDefaultCommand(arcadeDriveCommand);
 
         autoChooser.setDefaultOption("Default Auto", autoDrive);
-        //autoChooser.addOption("Surprise Auto", parallelCommands);
         SmartDashboard.putData(autoChooser);
     }
-
+    
+    /**
+     * Gets the autonomous command
+     * @return the currently selected autonomous command.
+     */
     public Command getAutonomousCommand() {
         
         return autoChooser.getSelected();

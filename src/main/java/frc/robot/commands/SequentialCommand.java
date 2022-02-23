@@ -7,7 +7,7 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 public class SequentialCommand extends SequentialCommandGroup {
     public SequentialCommand(DriveTrainSubsystem driveTrainSubsystem)
     {
-        AutoDriveCommand autoDriveCommand = new AutoDriveCommand(driveTrainSubsystem);
+        TrackObjectCommand autoDriveCommand = new TrackObjectCommand(driveTrainSubsystem);
         addCommands(
         // Drive forward the specified distance
         autoDriveCommand,

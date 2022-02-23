@@ -51,10 +51,10 @@ public class DriveCommand extends CommandBase {
    * Controls the motors in the tank drive style 
    */
   private void tankDrive(){
-    double volts = Constants.Kinematics.tankDriveVolts;
+    double volts = Constants.Kinematics.tankDriveVoltage;
     if (speedModifier.getAsBoolean())
     {
-      volts = Constants.Kinematics.tankDriveSpeedModifierVolts;
+      volts = Constants.Kinematics.tankDriveSpeedModifierVoltage;
     }
     driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * volts, rightSpeed.getAsDouble() * volts);
   }

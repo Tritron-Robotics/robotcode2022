@@ -5,10 +5,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 /** Subsystem for the motors that shoot the ball */
 public class ShootingSubsystem extends SubsystemBase {
@@ -23,19 +21,26 @@ public class ShootingSubsystem extends SubsystemBase {
         this.intakeMotor = intakeMotor;
         this.topLeftShootMotor = topLeftShootMotor;
         this.topRightShootMotor = topRightShootMotor;
-
-        SmartDashboard.putNumber("Shooter speed", 8);
-        SmartDashboard.putNumber("Intake speed", 7);
     }
 
     /**
-     * Shoots the ball
+     * Shoots the ball fast to make it into the top hub
      * @param input Controller input
      */
-    public void shoot(double input)
+    public void fastShoot(double input)
     {
-        topLeftShootMotor.setVoltage(input * SmartDashboard.getNumber("Shooter speed", 8));
-        topRightShootMotor.setVoltage(-input * SmartDashboard.getNumber("Shooter speed", 8));
+        topLeftShootMotor.setVoltage(input * Constants.Kinematics.fastShootVoltage);
+        topRightShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage);
+    }
+
+    /**
+     * Shoots the ball slowly to make it into the low hub
+     * @param input Controller input
+     */
+    public void slowShoot(double input)
+    {
+        topLeftShootMotor.setVoltage(input * Constants.Kinematics.slowShootVoltage);
+        topRightShootMotor.setVoltage(-input * Constants.Kinematics.slowShootVoltage);
     }
 
     /**
@@ -44,7 +49,13 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void spinIntake(double input)
     {
-        intakeMotor.setVoltage(input * SmartDashboard.getNumber("Intake speed", 7)); 
+        intakeMotor.setVoltage(input * Constants.Kinematics.intakeVoltage); 
+    }
+
+    public void stopShootingMotors()
+    {
+        topLeftShootMotor.setVoltage(0);
+        topRightShootMotor.setVoltage(0);
     }
 
     public void stopMotors()

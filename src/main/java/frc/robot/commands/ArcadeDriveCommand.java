@@ -53,7 +53,7 @@ public class ArcadeDriveCommand extends CommandBase {
    */
   void arcadeMode()
   {
-    double volts = speedMofidier.getAsBoolean() ? Constants.Kinematics.arcadeDriveSpeedModifierVolts : Constants.Kinematics.arcadeDriveVolts;
+    double volts = speedMofidier.getAsBoolean() ? Constants.Kinematics.arcadeDriveSpeedModifierVoltage : Constants.Kinematics.arcadeDriveVoltage;
     driveTrain.arcadeDrive(forwardInput.getAsDouble() * volts, rotInput.getAsDouble() * volts);
   }
 
