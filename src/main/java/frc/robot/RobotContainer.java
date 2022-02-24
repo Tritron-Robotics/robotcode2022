@@ -91,12 +91,12 @@ public class RobotContainer {
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoDrive = new AutoDriveCommand(robotDrive);
+        //autoDrive = new AutoDriveCommand(robotDrive);
         
         robotDrive.setDefaultCommand(arcadeDriveCommand);
 
-        autoChooser.setDefaultOption("Default Auto", autoDrive);
-        SmartDashboard.putData(autoChooser);
+        //autoChooser.setDefaultOption("Default Auto", autoDrive);
+        //SmartDashboard.putData(autoChooser);
     }
     
     /**
@@ -105,7 +105,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         
-        return autoChooser.getSelected();
+        return getAutoTrajectoryFollowCommand();
     }
 
     // Trajectory Generation

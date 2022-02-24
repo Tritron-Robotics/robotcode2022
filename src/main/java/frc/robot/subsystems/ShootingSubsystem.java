@@ -21,6 +21,8 @@ public class ShootingSubsystem extends SubsystemBase {
         this.intakeMotor = intakeMotor;
         this.topLeftShootMotor = topLeftShootMotor;
         this.topRightShootMotor = topRightShootMotor;
+
+        topRightShootMotor.setInverted(true);
     }
 
     /**
@@ -29,7 +31,7 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void fastShoot(double input)
     {
-        topLeftShootMotor.setVoltage(input * Constants.Kinematics.fastShootVoltage);
+        topLeftShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage);
         topRightShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage);
     }
 
@@ -39,7 +41,7 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void slowShoot(double input)
     {
-        topLeftShootMotor.setVoltage(input * Constants.Kinematics.slowShootVoltage);
+        topLeftShootMotor.setVoltage(-input * Constants.Kinematics.slowShootVoltage);
         topRightShootMotor.setVoltage(-input * Constants.Kinematics.slowShootVoltage);
     }
 

@@ -14,7 +14,7 @@ public final class Constants {
         public static final double tankDriveSpeedModifierVoltage = 0.9;
 
         public static final double fastShootVoltage = 8.25;
-        public static final double slowShootVoltage = 5.5;
+        public static final double slowShootVoltage = 5.75;
 
         public static final double intakeVoltage = 5;
 
