@@ -10,10 +10,10 @@ public final class Constants {
         public static final double tankDriveVoltage = 4.0;
         public static final double arcadeDriveVoltage = 0.5;
 
-        public static final double arcadeDriveSpeedModifierVoltage = 0.7;
+        public static final double arcadeDriveSpeedModifierVoltage = 0.8;
         public static final double tankDriveSpeedModifierVoltage = 0.9;
 
-        public static final double fastShootVoltage = 8.25;
+        public static final double fastShootVoltage = 9;
         public static final double slowShootVoltage = 5.75;
 
         public static final double intakeVoltage = 5;
