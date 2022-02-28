@@ -160,6 +160,7 @@ public class RobotContainer {
             robotDrive
         );       
 
+        System.out.println("Ramsete");
         // Reset odometry to the starting pose of the trajectory.
         robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 

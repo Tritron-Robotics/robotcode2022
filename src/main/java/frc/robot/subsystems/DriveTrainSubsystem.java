@@ -66,9 +66,12 @@ public class DriveTrainSubsystem extends SubsystemBase{
      * @param rightVolts Voltage for rear right motors
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        rearLeft.setVoltage(leftVolts);
-        rearRight.setVoltage(rightVolts);
-        drive.feed();
+        System.out.println("Left volts: " + leftVolts);
+        System.out.println("Right volts: " + rightVolts);
+        drive.tankDrive(leftVolts, rightVolts);
+        // rearLeft.setVoltage(leftVolts);
+        // rearRight.setVoltage(rightVolts);
+        //drive.feed();
     }
 
     /**
@@ -98,7 +101,7 @@ public class DriveTrainSubsystem extends SubsystemBase{
     @Override
     public void periodic() {
         //System.out.println("Degrees: " + getHeading().getDegrees());
-        System.out.println("Pose: " + odometry.getPoseMeters());
+        //System.out.println("Pose: " + odometry.getPoseMeters());
 
         odometry.update(getHeading(), rearLeft.getEncoder().getPosition(), rearRight.getEncoder().getPosition());
     }
@@ -112,6 +115,7 @@ public class DriveTrainSubsystem extends SubsystemBase{
     // RPM of Motor, converted to m/s. Divide by gear ratio. Use radius of wheels.
     // Returns wheel speeds.
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        //System.out.println("Rear left: " + rearLeft.getEncoder().getVelocity());
         return new DifferentialDriveWheelSpeeds(rearLeft.getEncoder().getVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, 
         rearRight.getEncoder().getVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
     }
