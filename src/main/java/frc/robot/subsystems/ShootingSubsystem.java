@@ -46,6 +46,16 @@ public class ShootingSubsystem extends SubsystemBase {
     }
 
     /**
+     * Shoots the ball slowly to make it into the low hub
+     * @param input Controller input
+     */
+    public void reverseShoot(double input)
+    {
+        topLeftShootMotor.setVoltage(input * Constants.Kinematics.reverseShootVoltage);
+        topRightShootMotor.setVoltage(input * Constants.Kinematics.reverseShootVoltage);
+    }
+
+    /**
      * Activates the intake system
      * @param input Controller input
      */

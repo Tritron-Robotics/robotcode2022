@@ -87,7 +87,8 @@ public class RobotContainer {
             shootingSubsystem,
             () -> controller.getRawButton(Constants.Controller.leftTrigger),
             () -> controller.getRawButton(Constants.Controller.rightTrigger),          
-            () -> controller.getRawAxis(3));       
+            () -> controller.getRawAxis(3),
+            () -> controller.getRawButton(Constants.Controller.xButton));       
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 

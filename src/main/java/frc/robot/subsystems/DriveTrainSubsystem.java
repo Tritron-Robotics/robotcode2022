@@ -97,6 +97,9 @@ public class DriveTrainSubsystem extends SubsystemBase{
     // Update odometry (robot position).
     @Override
     public void periodic() {
+        //System.out.println("Degrees: " + getHeading().getDegrees());
+        System.out.println("Pose: " + odometry.getPoseMeters());
+
         odometry.update(getHeading(), rearLeft.getEncoder().getPosition(), rearRight.getEncoder().getPosition());
     }
 

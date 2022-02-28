@@ -8,13 +8,14 @@ public final class Constants {
     public static final class Kinematics
     {
         public static final double tankDriveVoltage = 4.0;
-        public static final double arcadeDriveVoltage = 0.5;
+        public static final double arcadeDriveVoltage = 0.6;
 
         public static final double arcadeDriveSpeedModifierVoltage = 0.8;
         public static final double tankDriveSpeedModifierVoltage = 0.9;
 
         public static final double fastShootVoltage = 9;
         public static final double slowShootVoltage = 5.75;
+        public static final double reverseShootVoltage = 3;
 
         public static final double intakeVoltage = 5;
 
@@ -56,6 +57,7 @@ public final class Constants {
         public static final int y = 1;
         public static final int rightBumper = 6;
         public static final int leftBumper = 5;
+        public static final int xButton = 4;
 
         
         // to get left stick y-axis: -controller.getY()

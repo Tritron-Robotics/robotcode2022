@@ -11,6 +11,7 @@ public class ShootCommand extends CommandBase {
     public ShootingSubsystem subsystem;
     public BooleanSupplier fastShootInput;
     public BooleanSupplier slowShootInput;
+    public BooleanSupplier reverseShootInput;
     private DoubleSupplier intakeInput;
 
     /**
@@ -19,11 +20,12 @@ public class ShootCommand extends CommandBase {
      * @param fastShootInput Boolean that determines whether we want to shoot or not
      * @param slowShootInput Boolean that determines if the intake motors are on or not
      */
-    public ShootCommand(ShootingSubsystem shootingSubsystem, BooleanSupplier fastShootInput, BooleanSupplier slowShootInput, DoubleSupplier intakeInput) {
+    public ShootCommand(ShootingSubsystem shootingSubsystem, BooleanSupplier fastShootInput, BooleanSupplier slowShootInput, DoubleSupplier intakeInput, BooleanSupplier reverseShootInput) {
         this.fastShootInput = fastShootInput;
         this.slowShootInput = slowShootInput;
         this.intakeInput = intakeInput;
         this.subsystem = shootingSubsystem;
+        this.reverseShootInput = reverseShootInput;
         addRequirements(shootingSubsystem);
     }
 
@@ -45,6 +47,10 @@ public class ShootCommand extends CommandBase {
         {
             subsystem.slowShoot(1);
         } 
+        else if (reverseShootInput.getAsBoolean())
+        {
+            subsystem.reverseShoot(1);
+        }
         else 
         {
             subsystem.stopShootingMotors();
