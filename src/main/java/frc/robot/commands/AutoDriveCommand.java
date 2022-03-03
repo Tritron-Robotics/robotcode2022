@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -12,10 +14,17 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -26,56 +35,44 @@ public class AutoDriveCommand extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
+  RamseteController controller = new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta);
 
-  // Create a voltage constraint to ensure we don't accelerate too fast
   DifferentialDriveVoltageConstraint autoVoltageConstraint =
-  new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
-                              Constants.Kinematics.kvVoltSecondsPerMeter,
-                              Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
-      Constants.Kinematics.kDriveKinematics,
-      10);
-
-  // Create config for trajectory
-  TrajectoryConfig config =
-      new TrajectoryConfig(Constants.Kinematics.kMaxSpeedMetersPerSecond,
-                          Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
-          // Add kinematics to ensure max speed is actually obeyed
-          .setKinematics(Constants.Kinematics.kDriveKinematics)
-          // Apply the voltage constraint
-          .addConstraint(autoVoltageConstraint);
+        new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
+                                    Constants.Kinematics.kvVoltSecondsPerMeter,
+                                    Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+            Constants.Kinematics.kDriveKinematics,
+          5);
+            
+   // Create config for trajectory
+   TrajectoryConfig config =
+   new TrajectoryConfig(Constants.Kinematics.kMaxSpeedMetersPerSecond,
+                       Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
+       // Add kinematics to ensure max speed is actually obeyed
+       .setKinematics(Constants.Kinematics.kDriveKinematics)
+       // Apply the voltage constraint
+       .addConstraint(autoVoltageConstraint);
 
   // An example trajectory to follow.  All units in meters.
-  Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-      // Start at the origin facing the +X direction
-      new Pose2d(0, 0, new Rotation2d(0)),
-      // Pass through these two interior waypoints, making an 's' curve path
-      List.of(
-          new Translation2d(1, 1),
-          new Translation2d(2, -1)
-      ),
-      // End 3 meters straight ahead of where we started, facing forward
-      new Pose2d(3, 0, new Rotation2d(0)),
-      // Pass config
-      config
+  Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+    // Start at the origin facing the +X direction
+    new Pose2d(0, 0, new Rotation2d(0)),
+    // Pass through these two interior waypoints, making an 's' curve path
+    List.of(
+        new Translation2d(1, 1),
+        new Translation2d(2, -1)
+    ),
+    // End 3 meters straight ahead of where we started, facing forward
+    new Pose2d(3, 0, new Rotation2d(0)),
+    // Pass config
+    config
   );
 
-  RamseteCommand ramseteCommand = new RamseteCommand(
-      exampleTrajectory,
-      driveTrain::getPose,
-      new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
-      new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
-                                 Constants.Kinematics.kvVoltSecondsPerMeter,
-                                 Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
-      Constants.Kinematics.kDriveKinematics,
-      driveTrain::getWheelSpeeds,
-      new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
-      new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
-      // RamseteCommand passes volts to the callback
-      driveTrain::tankDriveVolts,
-      driveTrain
-  );       
-  
+  String trajectoryJSON = "paths/YourPath.wpilib.json";
+  //TrajectoryConfig trajectoryJson =  
+
+  //DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.Kinematics.kTrackwidthMeters);
 
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
@@ -92,18 +89,50 @@ public class AutoDriveCommand extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
+
+    // try {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    // } 
+    // catch (IOException ex) 
+    // {
+    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    // }
+
     // Reset odometry to the starting pose of the trajectory.
-    driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
+    //driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
     driveTrain.arcadeDrive(0, 0);
 
-    ramseteCommand.schedule();
+    //ramseteCommand.schedule();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
+    Trajectory.State goal = trajectory.sample(timer.get()); // sample the trajectory at 3.4 seconds from the beginning
+    Pose2d pose = driveTrain.getPose();
     
+    ChassisSpeeds adjustedSpeeds = controller.calculate(pose, goal);
+    DifferentialDriveWheelSpeeds wheelSpeeds = Constants.Kinematics.kDriveKinematics.toWheelSpeeds(adjustedSpeeds);
+    double left = wheelSpeeds.leftMetersPerSecond;
+    double right = wheelSpeeds.rightMetersPerSecond;
+    //System.out.println(controller.calculate(pose, goal));d
+    
+    left /= 13.0;
+    right /= 13.0;
+
+    System.out.println("Left: " + left + "  Right: " + right);
+    driveTrain.tankDriveVolts(left, right);
+
+    //   System.out.println(timer.get());
+
+    //   driveTrain.arcadeDrive(Constants.Kinematics.arcadeDriveSpeedModifierVoltage, 0);
+    // } 
+    // else
+    // {
+    //   driveTrain.arcadeDrive(0, 0);
+    // }
   }
 
   // Called once the command ends or is interrupted.

@@ -42,7 +42,7 @@ public class RobotContainer {
     private final Joystick controller = new Joystick(0);
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    private AutoDriveCommand autoDrive; 
+    private AutoDriveCommand autoDrive;
 
     /**
      * Initializes all robot commands.
@@ -92,7 +92,7 @@ public class RobotContainer {
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        //autoDrive = new AutoDriveCommand(robotDrive);
+        autoDrive = new AutoDriveCommand(robotDrive);
         
         robotDrive.setDefaultCommand(arcadeDriveCommand);
 
@@ -106,7 +106,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         
-        return getAutoTrajectoryFollowCommand();
+        return autoDrive;
     }
 
     // Trajectory Generation

@@ -21,14 +21,19 @@ public final class Constants {
 
 
         // PLACEHOLDERS: Use FRC Characterization Tool for values.
-        public static final double ksVolts = 0.22;
-        public static final double kvVoltSecondsPerMeter = 1.98;
+        // voltage needed to barely get the robot to start moving
+        public static final double ksVolts = 0.22; 
+        
+        //how much voltage is needed to hold the robot at a constant velocity.
+        public static final double kvVoltSecondsPerMeter = 1.98; 
+
+        //how much voltage is needed to accelerate the robot at a constant
         public static final double kaVoltSecondsSquaredPerMeter = 0.2;
 
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3.0;
         // Example value only - as above, this must be tuned for your drive.
-        public static final double kPDriveVel = 8.5;
+        public static final double kPDriveVel = 10;
 
         // Reasonable baseline values for a RAMSETE follower in units of meters and seconds.
         public static final double kRamseteB = 2;
