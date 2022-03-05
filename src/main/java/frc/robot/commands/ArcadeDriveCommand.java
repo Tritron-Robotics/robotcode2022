@@ -17,21 +17,23 @@ public class ArcadeDriveCommand extends CommandBase {
 
   private DoubleSupplier forwardInput;
   private DoubleSupplier rotInput;
-  private BooleanSupplier speedMofidier;
+  private BooleanSupplier partyModeInput;
+  private BooleanSupplier precisionModeInput;
+
 
   /**
    * Constructor for the ArcadeDriveCommand class
    * @param subsystem The DriveTrain subsystem
    * @param forwardInput Forward input. Positive value will move the robot forward.
    * @param rotInput Rotation input. Positive values will rotate the robot clockwise.
-   * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
+   * @param partyModeInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
    */
-  public ArcadeDriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier speedModifierInput) {
+  public ArcadeDriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier forwardInput, DoubleSupplier rotInput, BooleanSupplier partyModeInput, BooleanSupplier precisionModeInput) {
     driveTrain = subsystem;
     this.forwardInput = forwardInput;
     this.rotInput = rotInput;
-    this.speedMofidier = speedModifierInput;
-    
+    this.partyModeInput = partyModeInput;
+    this.precisionModeInput = precisionModeInput;
     addRequirements(driveTrain);
   }
 
@@ -53,7 +55,15 @@ public class ArcadeDriveCommand extends CommandBase {
    */
   void arcadeMode()
   {
-    double volts = speedMofidier.getAsBoolean() ? Constants.Kinematics.arcadeDriveSpeedModifierVoltage : Constants.Kinematics.arcadeDriveVoltage;
+    double volts = Constants.Kinematics.arcadeDriveVoltage;
+    if (partyModeInput.getAsBoolean())
+    {
+      volts = Constants.Kinematics.arcadeDrivePartyModeValue;
+    } 
+    else if (precisionModeInput.getAsBoolean())
+    {
+      volts = Constants.Kinematics.arcadeDrivePrecisionMode;
+    }
     driveTrain.arcadeDrive(forwardInput.getAsDouble() * volts, rotInput.getAsDouble() * volts);
   }
 

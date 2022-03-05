@@ -55,21 +55,23 @@ public class AutoDriveCommand extends CommandBase {
        .addConstraint(autoVoltageConstraint);
 
   // An example trajectory to follow.  All units in meters.
-  Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-    // Start at the origin facing the +X direction
-    new Pose2d(0, 0, new Rotation2d(0)),
-    // Pass through these two interior waypoints, making an 's' curve path
-    List.of(
-        new Translation2d(1, 1),
-        new Translation2d(2, -1)
-    ),
-    // End 3 meters straight ahead of where we started, facing forward
-    new Pose2d(3, 0, new Rotation2d(0)),
-    // Pass config
-    config
-  );
+  // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+  //   // Start at the origin facing the +X direction
+  //   new Pose2d(0, 0, new Rotation2d(0)),
+  //   // Pass through these two interior waypoints, making an 's' curve path
+  //   List.of(
+  //       new Translation2d(0, 0)
+  //   ),
+  //   // End 3 meters straight ahead of where we started, facing forward
+  //   new Pose2d(0, 0, new Rotation2d(0)),
+  //   // Pass config
+  //   config
+  // );
 
-  String trajectoryJSON = "paths/YourPath.wpilib.json";
+  String pathsFolder = "paths/";
+  String firstTrajectory = "FirstTrajectory.json";
+  String secondTrajectory = "SecondTrajectory.json";
+
   //TrajectoryConfig trajectoryJson =  
 
   //DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Constants.Kinematics.kTrackwidthMeters);
@@ -91,17 +93,19 @@ public class AutoDriveCommand extends CommandBase {
     timer.start();
 
     // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(pathsFolder + firstTrajectory);
+    //   Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
     // } 
     // catch (IOException ex) 
     // {
-    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    //   DriverStation.reportError("Unable to open trajectory: " + firstTrajectory, ex.getStackTrace());
     // }
 
     // Reset odometry to the starting pose of the trajectory.
     //driveTrain.resetOdometry(exampleTrajectory.getInitialPose());
-    driveTrain.arcadeDrive(0, 0);
+    //driveTrain.arcadeDrive(0, 0);
+
+    driveTrain.tankDriveVolts(0, 0);
 
     //ramseteCommand.schedule();
   }
@@ -110,20 +114,21 @@ public class AutoDriveCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    Trajectory.State goal = trajectory.sample(timer.get()); // sample the trajectory at 3.4 seconds from the beginning
-    Pose2d pose = driveTrain.getPose();
+    //driveTrain.tankDriveVolts(1.0, 1.0);
+    // Trajectory.State goal = trajectory.sample(timer.get()); // sample the trajectory at 3.4 seconds from the beginning
+    // Pose2d pose = driveTrain.getPose();
     
-    ChassisSpeeds adjustedSpeeds = controller.calculate(pose, goal);
-    DifferentialDriveWheelSpeeds wheelSpeeds = Constants.Kinematics.kDriveKinematics.toWheelSpeeds(adjustedSpeeds);
-    double left = wheelSpeeds.leftMetersPerSecond;
-    double right = wheelSpeeds.rightMetersPerSecond;
-    //System.out.println(controller.calculate(pose, goal));d
-    
-    left /= 13.0;
-    right /= 13.0;
+    // ChassisSpeeds adjustedSpeeds = controller.calculate(pose, goal);
+    // DifferentialDriveWheelSpeeds wheelSpeeds = Constants.Kinematics.kDriveKinematics.toWheelSpeeds(adjustedSpeeds);
+    // double left = wheelSpeeds.leftMetersPerSecond;
+    // double right = wheelSpeeds.rightMetersPerSecond;
+    //System.out.println("Left: " + left + " Right: " + right);
+    driveTrain.tankDriveVolts(0, 0);
+    // left /= 13.0;
+    // right /= 13.0;
 
-    System.out.println("Left: " + left + "  Right: " + right);
-    driveTrain.tankDriveVolts(left, right);
+    // System.out.println("Left: " + left + "  Right: " + right);
+    // driveTrain.tankDriveVolts(left, right);
 
     //   System.out.println(timer.get());
 

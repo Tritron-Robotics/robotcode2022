@@ -66,12 +66,12 @@ public class DriveTrainSubsystem extends SubsystemBase{
      * @param rightVolts Voltage for rear right motors
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        System.out.println("Left volts: " + leftVolts);
-        System.out.println("Right volts: " + rightVolts);
-        drive.tankDrive(leftVolts, rightVolts);
-        // rearLeft.setVoltage(leftVolts);
-        // rearRight.setVoltage(rightVolts);
-        //drive.feed();
+       // System.out.println("Left volts: " + leftVolts);
+        //System.out.println("Right volts: " + rightVolts);
+        //drive.tankDrive(leftVolts, rightVolts);
+        rearLeft.setVoltage(leftVolts);
+        rearRight.setVoltage(rightVolts);
+        drive.feed();
     }
 
     /**
@@ -100,9 +100,11 @@ public class DriveTrainSubsystem extends SubsystemBase{
     // Update odometry (robot position).
     @Override
     public void periodic() {
-        //System.out.println("Degrees: " + getHeading().getDegrees());
-        //System.out.println("Pose: " + odometry.getPoseMeters());
-
+        //System.out.print("Degrees: " + getHeading().getDegrees());
+        //System.out.println(" Pose: " + odometry.getPoseMeters());
+        double velocity = rearLeft.getEncoder().getVelocity() / 7.29 * Math.PI * Units.inchesToMeters(6.0) / 60.0;
+        //System.out.println("wheel speed: " + velocity);
+        
         odometry.update(getHeading(), rearLeft.getEncoder().getPosition(), rearRight.getEncoder().getPosition());
     }
 

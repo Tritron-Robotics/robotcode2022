@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.AutoDriveCommand;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SequentialCommand;
@@ -36,7 +37,7 @@ import frc.robot.subsystems.ShootingSubsystem;
 
 public class RobotContainer {
     // Drivetrain subsystem.
-    private DriveTrainSubsystem robotDrive; 
+    private DriveTrainSubsystem robotDriveSubsystem; 
     private ShootingSubsystem shootingSubsystem;
 
     private final Joystick controller = new Joystick(0);
@@ -44,6 +45,7 @@ public class RobotContainer {
 
     private AutoDriveCommand autoDrive;
 
+    AutonomousCommand autoCommand;
     /**
      * Initializes all robot commands.
      */
@@ -63,7 +65,7 @@ public class RobotContainer {
         CANSparkMax frontLeft = new CANSparkMax(Constants.MotorConstants.frontLeftPort, MotorType.kBrushless); 
         CANSparkMax rearRight = new CANSparkMax(Constants.MotorConstants.rearRightPort, MotorType.kBrushless); 
         CANSparkMax frontRight = new CANSparkMax(Constants.MotorConstants.frontRightPort, MotorType.kBrushless); 
-        robotDrive = new DriveTrainSubsystem(rearLeft, frontLeft, rearRight, frontRight);
+        robotDriveSubsystem = new DriveTrainSubsystem(rearLeft, frontLeft, rearRight, frontRight);
 
         CANSparkMax intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
         CANSparkMax topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
@@ -78,10 +80,11 @@ public class RobotContainer {
     private void AssignCommands()
     {
         Command arcadeDriveCommand = new ArcadeDriveCommand(
-            robotDrive, 
+            robotDriveSubsystem, 
             () -> -controller.getY(), 
             () -> controller.getX(), 
-            () -> controller.getRawButton(Constants.Controller.leftBumper));
+            () -> controller.getRawButton(Constants.Controller.leftBumper),
+            () -> controller.getRawButton(Constants.Controller.yButton));
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
@@ -92,9 +95,10 @@ public class RobotContainer {
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoDrive = new AutoDriveCommand(robotDrive);
+        //autoDrive = new AutoDriveCommand(robotDrive);
+        autoCommand = new AutonomousCommand(robotDriveSubsystem, shootingSubsystem);
         
-        robotDrive.setDefaultCommand(arcadeDriveCommand);
+        robotDriveSubsystem.setDefaultCommand(arcadeDriveCommand);
 
         //autoChooser.setDefaultOption("Default Auto", autoDrive);
         //SmartDashboard.putData(autoChooser);
@@ -104,9 +108,10 @@ public class RobotContainer {
      * Gets the autonomous command
      * @return the currently selected autonomous command.
      */
-    public Command getAutonomousCommand() {
-        
-        return autoDrive;
+    public Command getAutonomousCommand() 
+    {  
+        // return getAutoTrajectoryFollowCommand();
+        return autoCommand;
     }
 
     // Trajectory Generation
@@ -135,36 +140,35 @@ public class RobotContainer {
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(
-                new Translation2d(1, 1),
-                new Translation2d(2, -1)
+                new Translation2d(0, 1)
             ),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
+            new Pose2d(0, 2, new Rotation2d(0)),
             // Pass config
             config
         );
 
         RamseteCommand ramseteCommand = new RamseteCommand(
             exampleTrajectory,
-            robotDrive::getPose,
+            robotDriveSubsystem::getPose,
             new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
             new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
                                        Constants.Kinematics.kvVoltSecondsPerMeter,
                                        Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
             Constants.Kinematics.kDriveKinematics,
-            robotDrive::getWheelSpeeds,
+            robotDriveSubsystem::getWheelSpeeds,
             new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
             new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
             // RamseteCommand passes volts to the callback
-            robotDrive::tankDriveVolts,
-            robotDrive
+            robotDriveSubsystem::tankDriveVolts,
+            robotDriveSubsystem
         );       
 
         System.out.println("Ramsete");
         // Reset odometry to the starting pose of the trajectory.
-        robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
+        robotDriveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
 
         // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> robotDrive.tankDriveVolts(0, 0));
+        return ramseteCommand.andThen(() -> robotDriveSubsystem.tankDriveVolts(0, 0));
     }
 }

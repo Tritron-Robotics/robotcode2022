@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() { //it is autonomous, init?
 
     m_autonomousCommand = robotContainer.getAutonomousCommand();
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null & !m_autonomousCommand.isScheduled()) {
       m_autonomousCommand.schedule();
     }
   }
