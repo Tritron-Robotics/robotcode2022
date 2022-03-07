@@ -15,9 +15,11 @@ public class AutonomousCommand extends SequentialCommandGroup {
         addCommands(
             // new LookForBall(driveTrainSub),
             new PickUpBall(driveTrainSub, shootingSub),
-            new RotateDegrees(180, driveTrainSub)
-            //new ShootForSecondsCommand(2.0, driveTrainSub, shootingSub)
+            new RotateDegrees(180, driveTrainSub),
+            new ShootForSecondsCommand(2.0, driveTrainSub, shootingSub)
         );
+
+        addRequirements(driveTrainSub, shootingSub);
 
         // Add Commands here:
         // e.g. addSequential(new Command1());

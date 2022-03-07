@@ -22,7 +22,7 @@ public class PickUpBall extends CommandBase {
     this.shootingSubsystem = shootingSubsystem;
 
     timer = new Timer();
-    addRequirements(driveTrainSubsystem);
+    addRequirements(driveTrainSubsystem, shootingSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,7 +42,7 @@ public class PickUpBall extends CommandBase {
   public void execute() {
     if (timer.get() < 8.0) {
       MoveForward();
-      shootingSubsystem.spinIntake(0.5);
+      shootingSubsystem.spinIntake(0.7);
       System.out.println("Picking up ball for: " + timer.get() + "secs");
     }
     else
