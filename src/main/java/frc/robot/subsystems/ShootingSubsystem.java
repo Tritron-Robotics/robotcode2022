@@ -61,7 +61,6 @@ public class ShootingSubsystem extends SubsystemBase {
      */
     public void spinIntake(double input)
     {
-        System.out.println("Spin intake: " + input);
         intakeMotor.setVoltage(input * Constants.Kinematics.intakeVoltage); 
     }
 
@@ -71,9 +70,8 @@ public class ShootingSubsystem extends SubsystemBase {
         topRightShootMotor.setVoltage(0);
     }
 
-    public void stopMotors()
+    public void stopAllMotors()
     {
-        System.out.println("Stop motors");
         topLeftShootMotor.setVoltage(0);
         topRightShootMotor.setVoltage(0);
         intakeMotor.setVoltage(0);

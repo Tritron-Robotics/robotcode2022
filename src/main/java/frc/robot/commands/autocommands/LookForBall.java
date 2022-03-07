@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.autocommands;
 
 import java.util.function.DoubleSupplier;
 
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TrackObjectCommand extends CommandBase {
+public class LookForBall extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
@@ -37,7 +37,7 @@ public class TrackObjectCommand extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
+  public LookForBall(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelight = LimelightRunner.getInstance();
 
@@ -52,7 +52,7 @@ public class TrackObjectCommand extends CommandBase {
     timer.start();
 
     driveTrain.arcadeDrive(0, 0);
-    SmartDashboard.putNumber("ArcadeDriveY", 0);
+    //SmartDashboard.putNumber("ArcadeDriveY", 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -64,10 +64,12 @@ public class TrackObjectCommand extends CommandBase {
     
     if (!limelight.getIsTracking())
     {
-      //LookForObject();
+      MoveForward();
+      System.out.println("Move forward");
       return;
     }
 
+    System.out.println("Track");
     double error = limelight.getX();
 
     double steering_adjust = 0.0;
@@ -79,15 +81,21 @@ public class TrackObjectCommand extends CommandBase {
     else if (error < 1.0)
     {
       steering_adjust = turnConstant * error + min_turn;
+    } 
+    
+    if (Math.abs(steering_adjust) <= 0.01)
+    {
+        System.out.println("Steering adjust is low so stop tracking.");
+        isFinished = true;
     }
 
     System.out.println("Steering adjust: " + steering_adjust);
     driveTrain.arcadeDrive(0.0, steering_adjust);
   }
 
-  void LookForObject()
+  void MoveForward()
   {
-    driveTrain.arcadeDrive(0.0, 0.3);
+    driveTrain.tankDriveVolts(1.0, 1.0);;
   }
 
   public void SetShouldTrack(boolean shouldTrack)

@@ -25,13 +25,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.AutoDriveCommand;
-import frc.robot.commands.AutonomousCommand;
-import frc.robot.commands.TrackObjectCommand;
+import frc.robot.commands.autocommands.AutoDriveCommand;
+import frc.robot.commands.autocommands.AutonomousCommand;
+import frc.robot.commands.autocommands.BullCommand;
+import frc.robot.commands.autocommands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.SequentialCommand;
 import frc.robot.commands.ShootCommand;
-import frc.robot.commands.BullCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 

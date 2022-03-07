@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -10,6 +10,8 @@ public class PickUpBall extends CommandBase {
   ShootingSubsystem shootingSubsystem;
 
   private boolean isFinished = false;
+
+  double seconds;
   Timer timer;
 
   /**
@@ -17,9 +19,10 @@ public class PickUpBall extends CommandBase {
    * 
    * @param driveTrainSubsystem The drive train subsystem.
    */
-  public PickUpBall(DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
+  public PickUpBall(double seconds, DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
     this.driveTrain = driveTrainSubsystem;
     this.shootingSubsystem = shootingSubsystem;
+    this.seconds = seconds;
 
     timer = new Timer();
     addRequirements(driveTrainSubsystem, shootingSubsystem);
@@ -40,9 +43,9 @@ public class PickUpBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (timer.get() < 8.0) {
+    if (timer.get() < seconds) {
       MoveForward();
-      shootingSubsystem.spinIntake(0.7);
+      shootingSubsystem.spinIntake(1.0);
       System.out.println("Picking up ball for: " + timer.get() + "secs");
     }
     else
@@ -52,14 +55,14 @@ public class PickUpBall extends CommandBase {
   }
 
   void MoveForward() {
-    driveTrain.tankDriveVolts(1.0, 1.0);
+    driveTrain.tankDriveVolts(2.0, 2.0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveTrain.stopMotors();
-    shootingSubsystem.stopMotors();
+    shootingSubsystem.stopAllMotors();
   }
 
   // Returns true when the command should end.

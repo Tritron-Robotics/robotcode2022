@@ -32,7 +32,7 @@ public class ShootCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        subsystem.stopMotors();
+        subsystem.stopAllMotors();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -53,6 +53,7 @@ public class ShootCommand extends CommandBase {
         }
         else 
         {
+            System.out.print("Not shoot input so stopping motors");
             subsystem.stopShootingMotors();
         }
 

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -8,18 +8,20 @@ import frc.robot.subsystems.ShootingSubsystem;
 
 public class AutonomousCommand extends SequentialCommandGroup {
     
-    public AutonomousCommand(DriveTrainSubsystem driveTrainSub, ShootingSubsystem shootingSub) 
+    public AutonomousCommand(DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) 
     {
         System.out.println("Autonomous command group");
         // drive forward and look for ball
         addCommands(
             // new LookForBall(driveTrainSub),
-            new PickUpBall(driveTrainSub, shootingSub),
-            new RotateDegrees(180, driveTrainSub),
-            new ShootForSecondsCommand(2.0, driveTrainSub, shootingSub)
+            new PickUpBall(3.0, driveTrainSubsystem, shootingSubsystem),
+            new RotateDegrees(180, driveTrainSubsystem),
+            new IntakeForSecondsCommand(0.25, -1, shootingSubsystem),
+            new ShootForSecondsCommand(1.0, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(10.0, driveTrainSubsystem, shootingSubsystem)
         );
 
-        addRequirements(driveTrainSub, shootingSub);
+        addRequirements(driveTrainSubsystem, shootingSubsystem);
 
         // Add Commands here:
         // e.g. addSequential(new Command1());
