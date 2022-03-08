@@ -16,8 +16,45 @@ public class JitterBugSequentialCommand extends SequentialCommandGroup {
     {
         System.out.println("Autonomous command group");
 
-        jitter = new SequentialCommandGroup(
-        new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        // jitter = new SequentialCommandGroup(
+        // new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem)
+        // );
+
+        // drive forward and look for ball
+        addCommands(
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
+            new RotateDegrees(180, driveTrainSubsystem),
+            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
@@ -33,13 +70,6 @@ public class JitterBugSequentialCommand extends SequentialCommandGroup {
             new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem)
-        );
-
-        // drive forward and look for ball
-        addCommands(
-            jitter,
-            new RotateDegrees(180, driveTrainSubsystem),
-            jitter
         );
 
         addRequirements(driveTrainSubsystem, shootingSubsystem);       
