@@ -30,7 +30,6 @@ import frc.robot.commands.autocommands.AutonomousCommand;
 import frc.robot.commands.autocommands.BullCommand;
 import frc.robot.commands.autocommands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.SequentialCommand;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
@@ -42,8 +41,6 @@ public class RobotContainer {
 
     private final Joystick controller = new Joystick(0);
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-    private AutoDriveCommand autoDrive;
 
     AutonomousCommand autoCommand;
     /**

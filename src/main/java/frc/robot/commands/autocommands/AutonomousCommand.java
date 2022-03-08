@@ -13,11 +13,13 @@ public class AutonomousCommand extends SequentialCommandGroup {
         System.out.println("Autonomous command group");
         // drive forward and look for ball
         addCommands(
-            // new LookForBall(driveTrainSub),
-            new PickUpBall(3.0, driveTrainSubsystem, shootingSubsystem),
+            new PickUpBall(4.0, driveTrainSubsystem, shootingSubsystem),
             new RotateDegrees(180, driveTrainSubsystem),
             new IntakeForSecondsCommand(0.25, -1, shootingSubsystem),
+            new DriveForwardSeconds(2.0, 1, driveTrainSubsystem),
             new ShootForSecondsCommand(1.0, driveTrainSubsystem, shootingSubsystem),
+            new JitterBugSequentialCommand(driveTrainSubsystem, shootingSubsystem),
+            new RandomCommands(driveTrainSubsystem, shootingSubsystem),
             new DoAbsolutelyNothingForSeconds(10.0, driveTrainSubsystem, shootingSubsystem)
         );
 

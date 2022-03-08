@@ -11,16 +11,21 @@ public class RotateDegrees extends CommandBase {
     private boolean isFinished = false;
     Timer timer;
     double degrees;
-    double degreesPerSecond = 39;
+    double degreesPerSecond = 39.5;
+    double speed = 1.0;
 
     /**
      * Creates a new AutoDrive.
      * 
      * @param driveTrainSubsystem The drive train subsystem.
      */
-    public RotateDegrees(double degrees, DriveTrainSubsystem driveTrainSubsystem) {
+    public RotateDegrees(double degrees, DriveTrainSubsystem driveTrainSubsystem, double... speed) {
         this.driveTrain = driveTrainSubsystem;
         this.degrees = degrees;
+        if (speed != null && speed.length > 0)
+        {
+            this.speed = speed[0];
+        }
 
         timer = new Timer();
         addRequirements(driveTrainSubsystem);
@@ -43,8 +48,11 @@ public class RotateDegrees extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        System.out.println(degrees /  degreesPerSecond);
-        if (timer.get() < degrees / degreesPerSecond) {
+        double timeToRotate = degrees / degreesPerSecond;
+        timeToRotate /= speed;
+        System.out.println(timeToRotate);
+
+        if (timer.get() < timeToRotate) {
             System.out.println(timer.get());
             Rotate();
         } else {
@@ -53,7 +61,7 @@ public class RotateDegrees extends CommandBase {
     }
 
     void Rotate() {
-        driveTrain.tankDriveVolts(1.0, -1.0);
+        driveTrain.tankDriveVolts(speed, -speed);
     }
 
     // Called once the command ends or is interrupted.
