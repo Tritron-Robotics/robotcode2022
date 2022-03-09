@@ -29,7 +29,6 @@ public class IntakeForSecondsCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Start intaking");
         isFinished = false;
         
         timer.reset();
@@ -43,14 +42,11 @@ public class IntakeForSecondsCommand extends CommandBase {
     public void execute() {
         if (timer.get() < seconds) 
         {
-            System.out.println("intake");
-
             shootingSubsystem.spinIntake(-1);
         } else
         {
             isFinished = true;
             shootingSubsystem.stopAllMotors();
-            System.out.println("Finished intaking");
         }
     }
 

@@ -65,11 +65,9 @@ public class LookForBall extends CommandBase {
     if (!limelight.getIsTracking())
     {
       MoveForward();
-      System.out.println("Move forward");
       return;
     }
 
-    System.out.println("Track");
     double error = limelight.getX();
 
     double steering_adjust = 0.0;

@@ -46,14 +46,11 @@ public class ShootForSecondsCommand extends CommandBase {
 
         if (timer.get() < seconds) 
         {
-            System.out.println("Shoot");
-
             shootingSubsystem.spinIntake(1.0);
             shootingSubsystem.fastShoot(1.0);
         } else
         {
             isFinished = true;
-            System.out.println("Finished shooting");
         }
     }
 

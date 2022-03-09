@@ -15,8 +15,8 @@ public class RotateDegrees extends CommandBase {
     double speed = 1.0;
 
     /**
-     * Creates a new AutoDrive.
-     * 
+     *  How much degrees
+     * @param degrees How many degrees to turn
      * @param driveTrainSubsystem The drive train subsystem.
      */
     public RotateDegrees(double degrees, DriveTrainSubsystem driveTrainSubsystem, double... speed) {
@@ -35,7 +35,6 @@ public class RotateDegrees extends CommandBase {
     @Override
     public void initialize() {
         isFinished = false;
-        System.out.print("Start rotate degrees");
 
         timer.reset();
         timer.start();
@@ -49,7 +48,7 @@ public class RotateDegrees extends CommandBase {
     @Override
     public void execute() {
         double timeToRotate = degrees / degreesPerSecond;
-        timeToRotate /= speed;
+        timeToRotate /= Math.abs(speed);
         System.out.println(timeToRotate);
 
         if (timer.get() < timeToRotate) {

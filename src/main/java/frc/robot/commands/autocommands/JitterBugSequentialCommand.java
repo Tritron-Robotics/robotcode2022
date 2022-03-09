@@ -10,30 +10,9 @@ import frc.robot.subsystems.ShootingSubsystem;
 
 public class JitterBugSequentialCommand extends SequentialCommandGroup {
     
-    SequentialCommandGroup jitter;
-    
     public JitterBugSequentialCommand(DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) 
     {
         System.out.println("Autonomous command group");
-
-        // jitter = new SequentialCommandGroup(
-        // new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-        //     new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem)
-        // );
 
         // drive forward and look for ball
         addCommands(

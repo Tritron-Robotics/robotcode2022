@@ -14,8 +14,6 @@ public class RandomCommands extends SequentialCommandGroup {
     
     public RandomCommands(DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) 
     {
-        System.out.println("Autonomous command group");
-
         jitter = new SequentialCommandGroup(
         new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
             new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
@@ -54,11 +52,11 @@ public class RandomCommands extends SequentialCommandGroup {
             new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, 4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
-            new RotateDegrees(180, driveTrainSubsystem, 4.0),
+            new RotateDegrees(180, driveTrainSubsystem, -4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, 4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
-            new RotateDegrees(180, driveTrainSubsystem, 4.0),
+            new RotateDegrees(180, driveTrainSubsystem, -4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem)
         );
 

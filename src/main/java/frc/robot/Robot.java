@@ -4,6 +4,24 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -19,6 +37,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer robotContainer;
+
+  // navX MXP using SPI
+  //AHRS gyro = new AHRS(SPI.Port.kMXP);  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -26,6 +47,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() { //issa robot, init?
     robotContainer = new RobotContainer();
+
+    //Shuffleboard.getTab("Gyro").add(gyro);
   }
 
   /**

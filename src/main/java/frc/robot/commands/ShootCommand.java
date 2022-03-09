@@ -53,7 +53,6 @@ public class ShootCommand extends CommandBase {
         }
         else 
         {
-            System.out.print("Not shoot input so stopping motors");
             subsystem.stopShootingMotors();
         }
 

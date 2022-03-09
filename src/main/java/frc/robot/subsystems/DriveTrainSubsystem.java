@@ -139,9 +139,15 @@ public class DriveTrainSubsystem extends SubsystemBase{
         rearLeft.getEncoder().setPosition(newLeftPose - oldLeftPose);
     }
 
+    double encoderPositionPerFoot = 53 / 8.0;
     // Get average distance of two encoders.
     public double getAverageEncoderDistance() {
         return (rearLeft.getEncoder().getPosition() + rearRight.getEncoder().getPosition()) / 2.0;
+    }
+
+    public double getAverageEncoderDistanceInFeet()
+    {
+        return getAverageEncoderDistance() / encoderPositionPerFoot;
     }
 
     // For setting max motor output. Useful for scaling speed.
