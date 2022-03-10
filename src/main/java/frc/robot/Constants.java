@@ -8,10 +8,9 @@ public final class Constants {
     public static final class Kinematics
     {
         public static final double tankDriveVoltage = 4.0;
-        public static final double arcadeDriveVoltage = 0.65;
+        public static final double arcadeDriveVoltage = 0.63;
 
-        //public static final double arcadeDrivePartyModeValue = 0.76;
-        public static final double arcadeDrivePartyModeValue = 0.83;
+        public static final double arcadeDrivePartyModeValue = 0.76;
         public static final double arcadeDrivePrecisionMode = 0.5;
 
         public static final double tankDrivePartyModeVoltage = 0.9;

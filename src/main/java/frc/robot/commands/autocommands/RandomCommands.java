@@ -10,29 +10,8 @@ import frc.robot.subsystems.ShootingSubsystem;
 
 public class RandomCommands extends SequentialCommandGroup {
     
-    SequentialCommandGroup jitter;
-    
     public RandomCommands(DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) 
     {
-        jitter = new SequentialCommandGroup(
-        new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem)
-        );
-
         // drive forward and look for ball
         addCommands(            
             new RotateDegrees(15, driveTrainSubsystem, 2.0),
@@ -41,23 +20,29 @@ public class RandomCommands extends SequentialCommandGroup {
             new RotateDegrees(30, driveTrainSubsystem, -2.0),
             new RotateDegrees(30, driveTrainSubsystem, 2.0),
             new RotateDegrees(30, driveTrainSubsystem, -2.0),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, 2.0),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15,  0.8, driveTrainSubsystem),
-            new DriveForwardSeconds(0.15, -0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.3,  -0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, 4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, -4.0),
-            new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
+            new DriveForwardSeconds(0.3,  -0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, 4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, -4.0),
-            new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem)
+            new DriveForwardSeconds(0.3,  -0.8, driveTrainSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem)
         );
 
         addRequirements(driveTrainSubsystem, shootingSubsystem);       

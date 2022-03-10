@@ -25,9 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.autocommands.AutoDriveCommand;
 import frc.robot.commands.autocommands.AutonomousCommand;
-import frc.robot.commands.autocommands.BullCommand;
 import frc.robot.commands.autocommands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
@@ -92,13 +90,12 @@ public class RobotContainer {
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        //autoDrive = new AutoDriveCommand(robotDrive);
         autoCommand = new AutonomousCommand(robotDriveSubsystem, shootingSubsystem);
         
         robotDriveSubsystem.setDefaultCommand(arcadeDriveCommand);
 
-        //autoChooser.setDefaultOption("Default Auto", autoDrive);
-        //SmartDashboard.putData(autoChooser);
+        autoChooser.setDefaultOption("Default Auto", autoCommand);
+        SmartDashboard.putData(autoChooser);
     }
     
     /**
@@ -107,65 +104,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() 
     {  
-        // return getAutoTrajectoryFollowCommand();
-        return autoCommand;
-    }
-
-    // Trajectory Generation
-    public Command getAutoTrajectoryFollowCommand() {
-        // Create a voltage constraint to ensure we don't accelerate too fast
-        var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
-                                    Constants.Kinematics.kvVoltSecondsPerMeter,
-                                    Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
-            Constants.Kinematics.kDriveKinematics,
-            10);
-
-        // Create config for trajectory
-        TrajectoryConfig config =
-            new TrajectoryConfig(Constants.Kinematics.kMaxSpeedMetersPerSecond,
-                                Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
-                // Add kinematics to ensure max speed is actually obeyed
-                .setKinematics(Constants.Kinematics.kDriveKinematics)
-                // Apply the voltage constraint
-                .addConstraint(autoVoltageConstraint);
-
-        // An example trajectory to follow.  All units in meters.
-        Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(
-                new Translation2d(0, 1)
-            ),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(0, 2, new Rotation2d(0)),
-            // Pass config
-            config
-        );
-
-        RamseteCommand ramseteCommand = new RamseteCommand(
-            exampleTrajectory,
-            robotDriveSubsystem::getPose,
-            new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
-            new SimpleMotorFeedforward(Constants.Kinematics.ksVolts,
-                                       Constants.Kinematics.kvVoltSecondsPerMeter,
-                                       Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
-            Constants.Kinematics.kDriveKinematics,
-            robotDriveSubsystem::getWheelSpeeds,
-            new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
-            new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
-            // RamseteCommand passes volts to the callback
-            robotDriveSubsystem::tankDriveVolts,
-            robotDriveSubsystem
-        );       
-
-        System.out.println("Ramsete");
-        // Reset odometry to the starting pose of the trajectory.
-        robotDriveSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
-
-        // Run path following command, then stop at the end.
-        return ramseteCommand.andThen(() -> robotDriveSubsystem.tankDriveVolts(0, 0));
+        return autoChooser.getSelected();
     }
 }

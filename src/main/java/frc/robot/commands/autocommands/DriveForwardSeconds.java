@@ -16,8 +16,10 @@ public class DriveForwardSeconds extends CommandBase {
   Timer timer;
 
   /**
-   * Creates a new AutoDrive.
+   * Creates DriveForwardSeconds command
    * 
+   * @param seconds The amount of time the robot should drive forward
+   * @param dir The direction the robot should drive in. (1.0 == forward, -1.0 == backward)
    * @param driveTrainSubsystem The drive train subsystem.
    */
   public DriveForwardSeconds(double seconds, double dir, DriveTrainSubsystem driveTrainSubsystem) {
@@ -44,7 +46,6 @@ public class DriveForwardSeconds extends CommandBase {
   public void execute() {
     if (timer.get() < seconds) {
       MoveForward();
-      System.out.println("moving forward for: " + timer.get() + "secs");
     }
     else
     {

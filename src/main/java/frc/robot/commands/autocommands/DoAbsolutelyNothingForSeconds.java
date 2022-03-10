@@ -5,40 +5,43 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 
+/**
+ * This class does absolutely nothing. 
+ * It just wastes time
+ */
 public class DoAbsolutelyNothingForSeconds extends CommandBase {
     ShootingSubsystem shootingSubsystem;
-    DriveTrainSubsystem dts;
-
+    DriveTrainSubsystem driveTrainSubsystem;
 
     private boolean isFinished = false;
     Timer timer;
 
     double seconds;
     /**
-     * Creates a new AutoDrive.
-     * 
+     * Creates DoAbsolutelyNothingForSeconds
+     * @param seconds The amount of time to do absolutely nothing 
      * @param driveTrainSubsystem The drive train subsystem.
+     * @param shootingSubsystem The shooting subsystem.
      */
-    public DoAbsolutelyNothingForSeconds(double seconds, DriveTrainSubsystem dts, ShootingSubsystem shootingSubsystem) {
+    public DoAbsolutelyNothingForSeconds(double seconds, DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
         this.shootingSubsystem = shootingSubsystem;
-        this.dts = dts;
+        this.driveTrainSubsystem = driveTrainSubsystem;
         this.seconds = seconds;
 
         timer = new Timer();
-        addRequirements(shootingSubsystem, dts);
+        addRequirements(shootingSubsystem, driveTrainSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Start waiting to do absolutely nothing");
         isFinished = false;
         
         timer.reset();
         timer.start();
 
         shootingSubsystem.stopAllMotors();
-        dts.stopMotors();
+        driveTrainSubsystem.stopMotors();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -46,13 +49,11 @@ public class DoAbsolutelyNothingForSeconds extends CommandBase {
     public void execute() {
         if (timer.get() < seconds) 
         {
-            System.out.println("Doing nothing right now.");
             shootingSubsystem.stopAllMotors();
-            dts.stopMotors();
+            driveTrainSubsystem.stopMotors();
         } else
         {
             isFinished = true;
-            System.out.println("Finished doing nothing");
         }
     }
 
@@ -60,7 +61,7 @@ public class DoAbsolutelyNothingForSeconds extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         shootingSubsystem.stopAllMotors();
-        dts.stopMotors();
+        driveTrainSubsystem.stopMotors();
         isFinished = true;
     }
 

@@ -14,9 +14,10 @@ public class ShootForSecondsCommand extends CommandBase {
 
     double seconds;
     /**
-     * Creates a new AutoDrive.
+     * Command that makes the robot shoot for seconds.
      * 
      * @param driveTrainSubsystem The drive train subsystem.
+     * @param shootingSubsystem The subsystem for shooting.
      */
     public ShootForSecondsCommand(double seconds, DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
         this.driveTrain = driveTrainSubsystem;
@@ -30,25 +31,23 @@ public class ShootForSecondsCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Start shooting");
         isFinished = false;
         
         timer.reset();
         timer.start();
-
-        driveTrain.arcadeDrive(0, 0);
-        // SmartDashboard.putNumber("ArcadeDriveY", 0);
+        
+        driveTrain.tankDriveVolts(0, 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
         if (timer.get() < seconds) 
         {
             shootingSubsystem.spinIntake(1.0);
             shootingSubsystem.fastShoot(1.0);
-        } else
+        } 
+        else
         {
             isFinished = true;
         }
@@ -58,6 +57,7 @@ public class ShootForSecondsCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         driveTrain.stopMotors();
+        shootingSubsystem.stopAllMotors();
         isFinished = true;
     }
 

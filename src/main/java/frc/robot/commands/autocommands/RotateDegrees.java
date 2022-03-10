@@ -49,10 +49,8 @@ public class RotateDegrees extends CommandBase {
     public void execute() {
         double timeToRotate = degrees / degreesPerSecond;
         timeToRotate /= Math.abs(speed);
-        System.out.println(timeToRotate);
 
         if (timer.get() < timeToRotate) {
-            System.out.println(timer.get());
             Rotate();
         } else {
             isFinished = true;

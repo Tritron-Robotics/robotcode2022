@@ -2,7 +2,6 @@ package frc.robot.commands.autocommands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
 
 public class IntakeForSecondsCommand extends CommandBase {
@@ -14,9 +13,10 @@ public class IntakeForSecondsCommand extends CommandBase {
     double seconds;
     int direction;
     /**
-     * Creates a new AutoDrive.
-     * 
-     * @param driveTrainSubsystem The drive train subsystem.
+     * Creates the Intake for seconds command.
+     * @param seconds The amount of time to intake.
+     * @param direction The direction to intake for.
+     * @param shootingSubsystem The shooting subsystem.
      */
     public IntakeForSecondsCommand(double seconds, int direction, ShootingSubsystem shootingSubsystem) {
         this.shootingSubsystem = shootingSubsystem;
