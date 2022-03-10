@@ -97,6 +97,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="horizontal">
 <li><a href="frc/robot/package-tree.html">frc.robot</a>, </li>
 <li><a href="frc/robot/commands/package-tree.html">frc.robot.commands</a>, </li>
+<li><a href="frc/robot/commands/autocommands/package-tree.html">frc.robot.commands.autocommands</a>, </li>
 <li><a href="frc/robot/subsystems/package-tree.html">frc.robot.subsystems</a></li>
 </ul>
 </div>
@@ -109,16 +110,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">edu.wpi.first.wpilibj2.command.CommandBase (implements edu.wpi.first.wpilibj2.command.Command, edu.wpi.first.util.sendable.Sendable)
 <ul>
 <li class="circle">frc.robot.commands.<a href="frc/robot/commands/ArcadeDriveCommand.html" title="class in frc.robot.commands"><span class="typeNameLink">ArcadeDriveCommand</span></a></li>
-<li class="circle">frc.robot.commands.<a href="frc/robot/commands/AutoDriveCommand.html" title="class in frc.robot.commands"><span class="typeNameLink">AutoDriveCommand</span></a></li>
-<li class="circle">frc.robot.commands.<a href="frc/robot/commands/BullCommand.html" title="class in frc.robot.commands"><span class="typeNameLink">BullCommand</span></a></li>
+<li class="circle">edu.wpi.first.wpilibj2.command.CommandGroupBase
+<ul>
+<li class="circle">edu.wpi.first.wpilibj2.command.SequentialCommandGroup
+<ul>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/AutonomousCommand.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">AutonomousCommand</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/RandomCommands.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">RandomCommands</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/DoAbsolutelyNothingForSeconds.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">DoAbsolutelyNothingForSeconds</span></a></li>
 <li class="circle">frc.robot.commands.<a href="frc/robot/commands/DriveCommand.html" title="class in frc.robot.commands"><span class="typeNameLink">DriveCommand</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/DriveForwardDistance.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">DriveForwardDistance</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/DriveForwardSeconds.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">DriveForwardSeconds</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/IntakeForSecondsCommand.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">IntakeForSecondsCommand</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/LookForBall.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">LookForBall</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/PickUpBall.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">PickUpBall</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/RotateDegrees.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">RotateDegrees</span></a></li>
 <li class="circle">frc.robot.commands.<a href="frc/robot/commands/ShootCommand.html" title="class in frc.robot.commands"><span class="typeNameLink">ShootCommand</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/ShootForSecondsCommand.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">ShootForSecondsCommand</span></a></li>
+<li class="circle">frc.robot.commands.autocommands.<a href="frc/robot/commands/autocommands/TrackObjectCommand.html" title="class in frc.robot.commands.autocommands"><span class="typeNameLink">TrackObjectCommand</span></a></li>
 </ul>
 </li>
 <li class="circle">frc.robot.<a href="frc/robot/Constants.html" title="class in frc.robot"><span class="typeNameLink">Constants</span></a></li>
 <li class="circle">frc.robot.<a href="frc/robot/Constants.Controller.html" title="class in frc.robot"><span class="typeNameLink">Constants.Controller</span></a></li>
 <li class="circle">frc.robot.<a href="frc/robot/Constants.Kinematics.html" title="class in frc.robot"><span class="typeNameLink">Constants.Kinematics</span></a></li>
 <li class="circle">frc.robot.<a href="frc/robot/Constants.MotorConstants.html" title="class in frc.robot"><span class="typeNameLink">Constants.MotorConstants</span></a></li>
+<li class="circle">frc.robot.<a href="frc/robot/LimelightRunner.html" title="class in frc.robot"><span class="typeNameLink">LimelightRunner</span></a></li>
 <li class="circle">frc.robot.<a href="frc/robot/Main.html" title="class in frc.robot"><span class="typeNameLink">Main</span></a></li>
 <li class="circle">edu.wpi.first.wpilibj.RobotBase (implements java.lang.AutoCloseable)
 <ul>
@@ -136,7 +155,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="circle">frc.robot.<a href="frc/robot/RobotContainer.html" title="class in frc.robot"><span class="typeNameLink">RobotContainer</span></a></li>
 <li class="circle">edu.wpi.first.wpilibj2.command.SubsystemBase (implements edu.wpi.first.util.sendable.Sendable, edu.wpi.first.wpilibj2.command.Subsystem)
 <ul>
-<li class="circle">frc.robot.subsystems.<a href="frc/robot/subsystems/DriveTrainSubsystem.html" title="class in frc.robot.subsystems"><span class="typeNameLink">DriveTrainSubsystem</span></a> (implements java.lang.AutoCloseable)</li>
+<li class="circle">frc.robot.subsystems.<a href="frc/robot/subsystems/DriveTrainSubsystem.html" title="class in frc.robot.subsystems"><span class="typeNameLink">DriveTrainSubsystem</span></a></li>
 <li class="circle">frc.robot.subsystems.<a href="frc/robot/subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems"><span class="typeNameLink">ShootingSubsystem</span></a></li>
 </ul>
 </li>

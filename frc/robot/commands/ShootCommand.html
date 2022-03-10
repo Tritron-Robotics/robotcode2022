@@ -163,15 +163,20 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>java.util.function.BooleanSupplier</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#binaryIntakeInput">binaryIntakeInput</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fastShootInput">fastShootInput</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.util.function.BooleanSupplier</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#shootInput">shootInput</a></span></code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reverseShootInput">reverseShootInput</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>java.util.function.BooleanSupplier</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#slowShootInput">slowShootInput</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code><a href="../subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems">ShootingSubsystem</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#subsystem">subsystem</a></span></code></th>
 <td class="colLast">&nbsp;</td>
@@ -201,10 +206,11 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(frc.robot.subsystems.ShootingSubsystem,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier,java.util.function.DoubleSupplier)">ShootCommand</a></span>&#8203;(<a href="../subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems">ShootingSubsystem</a>&nbsp;shootingSubsystem,
-            java.util.function.BooleanSupplier&nbsp;shootInput,
-            java.util.function.BooleanSupplier&nbsp;binaryIntakeInput,
-            java.util.function.DoubleSupplier&nbsp;intakeInput)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(frc.robot.subsystems.ShootingSubsystem,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier)">ShootCommand</a></span>&#8203;(<a href="../subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems">ShootingSubsystem</a>&nbsp;shootingSubsystem,
+            java.util.function.BooleanSupplier&nbsp;fastShootInput,
+            java.util.function.BooleanSupplier&nbsp;slowShootInput,
+            java.util.function.DoubleSupplier&nbsp;intakeInput,
+            java.util.function.BooleanSupplier&nbsp;reverseShootInput)</code></th>
 <td class="colLast">
 <div class="block">Constructor for the ShootCommand class</div>
 </td>
@@ -294,22 +300,31 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <pre>public&nbsp;<a href="../subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems">ShootingSubsystem</a> subsystem</pre>
 </li>
 </ul>
-<a id="shootInput">
+<a id="fastShootInput">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>shootInput</h4>
-<pre>public&nbsp;java.util.function.BooleanSupplier shootInput</pre>
+<h4>fastShootInput</h4>
+<pre>public&nbsp;java.util.function.BooleanSupplier fastShootInput</pre>
 </li>
 </ul>
-<a id="binaryIntakeInput">
+<a id="slowShootInput">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>slowShootInput</h4>
+<pre>public&nbsp;java.util.function.BooleanSupplier slowShootInput</pre>
+</li>
+</ul>
+<a id="reverseShootInput">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>binaryIntakeInput</h4>
-<pre>public&nbsp;java.util.function.BooleanSupplier binaryIntakeInput</pre>
+<h4>reverseShootInput</h4>
+<pre>public&nbsp;java.util.function.BooleanSupplier reverseShootInput</pre>
 </li>
 </ul>
 </li>
@@ -322,22 +337,23 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(frc.robot.subsystems.ShootingSubsystem,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier,java.util.function.DoubleSupplier)">
+<a id="&lt;init&gt;(frc.robot.subsystems.ShootingSubsystem,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ShootCommand</h4>
 <pre>public&nbsp;ShootCommand&#8203;(<a href="../subsystems/ShootingSubsystem.html" title="class in frc.robot.subsystems">ShootingSubsystem</a>&nbsp;shootingSubsystem,
-                    java.util.function.BooleanSupplier&nbsp;shootInput,
-                    java.util.function.BooleanSupplier&nbsp;binaryIntakeInput,
-                    java.util.function.DoubleSupplier&nbsp;intakeInput)</pre>
+                    java.util.function.BooleanSupplier&nbsp;fastShootInput,
+                    java.util.function.BooleanSupplier&nbsp;slowShootInput,
+                    java.util.function.DoubleSupplier&nbsp;intakeInput,
+                    java.util.function.BooleanSupplier&nbsp;reverseShootInput)</pre>
 <div class="block">Constructor for the ShootCommand class</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>shootingSubsystem</code> - Subsystem for shooting motors</dd>
-<dd><code>shootInput</code> - Boolean that determines whether we want to shoot or not</dd>
-<dd><code>binaryIntakeInput</code> - Boolean that determines if the intake motors are on or not</dd>
+<dd><code>fastShootInput</code> - Boolean that determines whether we want to shoot or not</dd>
+<dd><code>slowShootInput</code> - Boolean that determines if the intake motors are on or not</dd>
 </dl>
 </li>
 </ul>

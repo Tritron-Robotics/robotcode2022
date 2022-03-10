@@ -201,10 +201,11 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(frc.robot.subsystems.DriveTrainSubsystem,java.util.function.DoubleSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier)">DriveCommand</a></span>&#8203;(<a href="../subsystems/DriveTrainSubsystem.html" title="class in frc.robot.subsystems">DriveTrainSubsystem</a>&nbsp;subsystem,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(frc.robot.subsystems.DriveTrainSubsystem,java.util.function.DoubleSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier)">DriveCommand</a></span>&#8203;(<a href="../subsystems/DriveTrainSubsystem.html" title="class in frc.robot.subsystems">DriveTrainSubsystem</a>&nbsp;subsystem,
             java.util.function.DoubleSupplier&nbsp;leftInput,
             java.util.function.DoubleSupplier&nbsp;rightInput,
-            java.util.function.BooleanSupplier&nbsp;speedModifierInput)</code></th>
+            java.util.function.BooleanSupplier&nbsp;partyModeInput,
+            java.util.function.BooleanSupplier&nbsp;precisionModeInput)</code></th>
 <td class="colLast">
 <div class="block">Constructor for the DriveCommand class</div>
 </td>
@@ -329,7 +330,7 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(frc.robot.subsystems.DriveTrainSubsystem,java.util.function.DoubleSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier)">
+<a id="&lt;init&gt;(frc.robot.subsystems.DriveTrainSubsystem,java.util.function.DoubleSupplier,java.util.function.DoubleSupplier,java.util.function.BooleanSupplier,java.util.function.BooleanSupplier)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -338,14 +339,16 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <pre>public&nbsp;DriveCommand&#8203;(<a href="../subsystems/DriveTrainSubsystem.html" title="class in frc.robot.subsystems">DriveTrainSubsystem</a>&nbsp;subsystem,
                     java.util.function.DoubleSupplier&nbsp;leftInput,
                     java.util.function.DoubleSupplier&nbsp;rightInput,
-                    java.util.function.BooleanSupplier&nbsp;speedModifierInput)</pre>
+                    java.util.function.BooleanSupplier&nbsp;partyModeInput,
+                    java.util.function.BooleanSupplier&nbsp;precisionModeInput)</pre>
 <div class="block">Constructor for the DriveCommand class</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>subsystem</code> - Subsystem for drive train</dd>
 <dd><code>leftInput</code> - Left motors input</dd>
 <dd><code>rightInput</code> - Right motors input</dd>
-<dd><code>speedModifierInput</code> - Speed mofifier input. If this boolean is true, the speed of the motors will change.</dd>
+<dd><code>partyModeInput</code> - Speed mofifier input. If this boolean is true, the
+                       speed of the motors will change.</dd>
 </dl>
 </li>
 </ul>
@@ -405,7 +408,8 @@ extends edu.wpi.first.wpilibj2.command.CommandBase</pre>
 <div class="block">A very, very important method.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>randomBool</code> - This boolean is never used in the method. It is just a parameter.</dd>
+<dd><code>randomBool</code> - This boolean is never used in the method. It is just a
+                   parameter.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Always returns true.</dd>
 </dl>

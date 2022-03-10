@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -187,21 +187,40 @@ extends edu.wpi.first.wpilibj2.command.SubsystemBase</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#shoot(double)">shoot</a></span>&#8203;(double&nbsp;input)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#fastShoot(double)">fastShoot</a></span>&#8203;(double&nbsp;input)</code></th>
 <td class="colLast">
-<div class="block">Shoots the ball</div>
+<div class="block">Shoots the ball fast to make it into the top hub</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reverseShoot(double)">reverseShoot</a></span>&#8203;(double&nbsp;input)</code></th>
+<td class="colLast">
+<div class="block">Shoots the ball slowly to make it into the low hub</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#slowShoot(double)">slowShoot</a></span>&#8203;(double&nbsp;input)</code></th>
+<td class="colLast">
+<div class="block">Shoots the ball slowly to make it into the low hub</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#spinIntake(double)">spinIntake</a></span>&#8203;(double&nbsp;input)</code></th>
 <td class="colLast">
 <div class="block">Activates the intake system</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stopMotors()">stopMotors</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stopAllMotors()">stopAllMotors</a></span>()</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#stopShootingMotors()">stopShootingMotors</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -263,14 +282,42 @@ extends edu.wpi.first.wpilibj2.command.SubsystemBase</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="shoot(double)">
+<a id="fastShoot(double)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>shoot</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;shoot&#8203;(double&nbsp;input)</pre>
-<div class="block">Shoots the ball</div>
+<h4>fastShoot</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;fastShoot&#8203;(double&nbsp;input)</pre>
+<div class="block">Shoots the ball fast to make it into the top hub</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>input</code> - Controller input</dd>
+</dl>
+</li>
+</ul>
+<a id="slowShoot(double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>slowShoot</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;slowShoot&#8203;(double&nbsp;input)</pre>
+<div class="block">Shoots the ball slowly to make it into the low hub</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>input</code> - Controller input</dd>
+</dl>
+</li>
+</ul>
+<a id="reverseShoot(double)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>reverseShoot</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;reverseShoot&#8203;(double&nbsp;input)</pre>
+<div class="block">Shoots the ball slowly to make it into the low hub</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>input</code> - Controller input</dd>
@@ -291,13 +338,22 @@ extends edu.wpi.first.wpilibj2.command.SubsystemBase</pre>
 </dl>
 </li>
 </ul>
-<a id="stopMotors()">
+<a id="stopShootingMotors()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>stopShootingMotors</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;stopShootingMotors()</pre>
+</li>
+</ul>
+<a id="stopAllMotors()">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>stopMotors</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;stopMotors()</pre>
+<h4>stopAllMotors</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;stopAllMotors()</pre>
 </li>
 </ul>
 </li>

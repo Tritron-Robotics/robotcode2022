@@ -136,12 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>edu.wpi.first.util.sendable.Sendable</code>, <code>edu.wpi.first.wpilibj2.command.Subsystem</code>, <code>java.lang.AutoCloseable</code></dd>
+<dd><code>edu.wpi.first.util.sendable.Sendable</code>, <code>edu.wpi.first.wpilibj2.command.Subsystem</code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">DriveTrainSubsystem</span>
-extends edu.wpi.first.wpilibj2.command.SubsystemBase
-implements java.lang.AutoCloseable</pre>
+extends edu.wpi.first.wpilibj2.command.SubsystemBase</pre>
 <div class="block">Add your docs here.</div>
 </li>
 </ul>
@@ -198,13 +197,13 @@ implements java.lang.AutoCloseable</pre>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#close()">close</a></span>()</code></th>
+<td class="colFirst"><code>double</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverageEncoderDistance()">getAverageEncoderDistance</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>double</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverageEncoderDistance()">getAverageEncoderDistance</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAverageEncoderDistanceInFeet()">getAverageEncoderDistanceInFeet</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -383,10 +382,6 @@ implements java.lang.AutoCloseable</pre>
 <li class="blockList">
 <h4>periodic</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;periodic()</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>periodic</code>&nbsp;in interface&nbsp;<code>edu.wpi.first.wpilibj2.command.Subsystem</code></dd>
-</dl>
 </li>
 </ul>
 <a id="getPose()">
@@ -434,6 +429,15 @@ implements java.lang.AutoCloseable</pre>
 <pre class="methodSignature">public&nbsp;double&nbsp;getAverageEncoderDistance()</pre>
 </li>
 </ul>
+<a id="getAverageEncoderDistanceInFeet()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAverageEncoderDistanceInFeet</h4>
+<pre class="methodSignature">public&nbsp;double&nbsp;getAverageEncoderDistanceInFeet()</pre>
+</li>
+</ul>
 <a id="setMaxOutput(double)">
 <!--   -->
 </a>
@@ -455,26 +459,10 @@ implements java.lang.AutoCloseable</pre>
 <a id="getTurnRate()">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>getTurnRate</h4>
 <pre class="methodSignature">public&nbsp;double&nbsp;getTurnRate()</pre>
-</li>
-</ul>
-<a id="close()">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>close</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;close()
-           throws java.lang.Exception</pre>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>close</code>&nbsp;in interface&nbsp;<code>java.lang.AutoCloseable</code></dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.lang.Exception</code></dd>
-</dl>
 </li>
 </ul>
 </li>
