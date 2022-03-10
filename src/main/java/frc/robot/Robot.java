@@ -4,6 +4,24 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.CAN;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -19,6 +37,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer robotContainer;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -38,43 +57,22 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    LimelightRunner.getInstance().execute();
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select between different
-   * autonomous modes using the dashboard. The sendable chooser code works with the Java
-   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the chooser code and
-   * uncomment the getString line to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional comparisons to the switch structure
-   * below with additional strings. If using the SendableChooser make sure to add them to the
-   * chooser code above as well.
-   */
   @Override
   public void autonomousInit() { //it is autonomous, init?
 
-    // m_autonomousCommand = robotContainer.getAutonomousCommand();
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.schedule();
-    // }
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
+    if (m_autonomousCommand != null & !m_autonomousCommand.isScheduled()) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    /*
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
-    */
     m_autonomousCommand = robotContainer.getAutonomousCommand();
-    //System.out.println("autonomous periodic");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
@@ -83,7 +81,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    System.out.print("Teleop");
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -95,7 +92,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+  }
 
   /** This function is called periodically when disabled. */
   @Override

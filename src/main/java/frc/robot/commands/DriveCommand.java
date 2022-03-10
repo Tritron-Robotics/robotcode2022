@@ -17,21 +17,25 @@ public class DriveCommand extends CommandBase {
 
   public DoubleSupplier leftSpeed;
   public DoubleSupplier rightSpeed;
-  private BooleanSupplier speedModifier;
+  private BooleanSupplier partyModeInput;
+  private BooleanSupplier precisionModeInput;
 
   /**
    * Constructor for the DriveCommand class
-   * @param subsystem Subsystem for drive train
-   * @param leftInput Left motors input
-   * @param rightInput Right motors input
-   * @param speedModifierInput Speed mofifier input. If this boolean is true, the speed of the motors will change.
+   * 
+   * @param subsystem      Subsystem for drive train
+   * @param leftInput      Left motors input
+   * @param rightInput     Right motors input
+   * @param partyModeInput Speed mofifier input. If this boolean is true, the
+   *                       speed of the motors will change.
    */
-  public DriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput, BooleanSupplier speedModifierInput) {
+  public DriveCommand(DriveTrainSubsystem subsystem, DoubleSupplier leftInput, DoubleSupplier rightInput,
+      BooleanSupplier partyModeInput, BooleanSupplier precisionModeInput) {
     driveTrain = subsystem;
     this.leftSpeed = leftInput;
     this.rightSpeed = rightInput;
-    this.speedModifier = speedModifierInput;
-    
+    this.partyModeInput = partyModeInput;
+    this.precisionModeInput = precisionModeInput;
     addRequirements(driveTrain);
   }
 
@@ -48,17 +52,18 @@ public class DriveCommand extends CommandBase {
   }
 
   /**
-   * Controls the motors in the tank drive style 
+   * Controls the motors in the tank drive style
    */
-  private void tankDrive(){
-    double volts = Constants.Kinematics.tankDriveVolts;
-    if (speedModifier.getAsBoolean())
-    {
-      volts = Constants.Kinematics.tankDriveSpeedModifierVolts;
+  private void tankDrive() {
+    double volts = Constants.Kinematics.tankDriveVoltage;
+    if (partyModeInput.getAsBoolean()) {
+      volts = Constants.Kinematics.tankDrivePartyModeVoltage;
+    } else if (precisionModeInput.getAsBoolean()) {
+      volts = Constants.Kinematics.tankDrivePrecisionModeVoltage;
     }
     driveTrain.tankDriveVolts(leftSpeed.getAsDouble() * volts, rightSpeed.getAsDouble() * volts);
   }
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -72,11 +77,12 @@ public class DriveCommand extends CommandBase {
 
   /**
    * A very, very important method.
-   * @param randomBool This boolean is never used in the method. It is just a parameter.
+   * 
+   * @param randomBool This boolean is never used in the method. It is just a
+   *                   parameter.
    * @return Always returns true.
    */
-  public boolean checkBooleans(boolean randomBool)
-  {
+  public boolean checkBooleans(boolean randomBool) {
     return true;
   }
 }

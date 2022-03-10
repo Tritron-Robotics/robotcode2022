@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;;
 
 /** Add your docs here. */
-public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable {
+public class DriveTrainSubsystem extends SubsystemBase{
     // Motor controllers.
     private final CANSparkMax rearLeft;
     private final CANSparkMax frontLeft;
@@ -35,6 +35,7 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
     // Kinematics and Odometry.
     DifferentialDriveKinematics kinematics;
     DifferentialDriveOdometry odometry;
+    
 
     /**
      * Constructor, initialize motor controllers and groups.    
@@ -65,6 +66,9 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
      * @param rightVolts Voltage for rear right motors
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
+       // System.out.println("Left volts: " + leftVolts);
+        //System.out.println("Right volts: " + rightVolts);
+        //drive.tankDrive(leftVolts, rightVolts);
         rearLeft.setVoltage(leftVolts);
         rearRight.setVoltage(rightVolts);
         drive.feed();
@@ -96,6 +100,11 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
     // Update odometry (robot position).
     @Override
     public void periodic() {
+        //System.out.print("Degrees: " + getHeading().getDegrees());
+        //System.out.println(" Pose: " + odometry.getPoseMeters());
+        double velocity = rearLeft.getEncoder().getVelocity() / 7.29 * Math.PI * Units.inchesToMeters(6.0) / 60.0;
+        //System.out.println("wheel speed: " + velocity);
+        
         odometry.update(getHeading(), rearLeft.getEncoder().getPosition(), rearRight.getEncoder().getPosition());
     }
 
@@ -108,6 +117,7 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
     // RPM of Motor, converted to m/s. Divide by gear ratio. Use radius of wheels.
     // Returns wheel speeds.
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+        //System.out.println("Rear left: " + rearLeft.getEncoder().getVelocity());
         return new DifferentialDriveWheelSpeeds(rearLeft.getEncoder().getVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60, 
         rearRight.getEncoder().getVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60);
     }
@@ -129,9 +139,15 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
         rearLeft.getEncoder().setPosition(newLeftPose - oldLeftPose);
     }
 
+    double encoderPositionPerFoot = 53 / 8.0;
     // Get average distance of two encoders.
     public double getAverageEncoderDistance() {
         return (rearLeft.getEncoder().getPosition() + rearRight.getEncoder().getPosition()) / 2.0;
+    }
+
+    public double getAverageEncoderDistanceInFeet()
+    {
+        return getAverageEncoderDistance() / encoderPositionPerFoot;
     }
 
     // For setting max motor output. Useful for scaling speed.
@@ -147,14 +163,5 @@ public class DriveTrainSubsystem extends SubsystemBase implements AutoCloseable 
     // Get the turn rate of the robot in degrees per second.
     public double getTurnRate() {
         return -gyro.getRate();
-    }
-
-    @Override
-    public void close() throws Exception {
-        drive.close();
-        rearRight.close();
-        rearLeft.close();
-        frontLeft.close();
-        frontRight.close();
     }
 }

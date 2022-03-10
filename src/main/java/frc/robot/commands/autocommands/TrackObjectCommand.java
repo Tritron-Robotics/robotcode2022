@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.autocommands;
 
 import java.util.function.DoubleSupplier;
 
@@ -12,29 +12,34 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class AutoDriveCommand extends CommandBase {
+public class TrackObjectCommand extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
 
   DoubleSupplier testInput;
 
+  double turnConstant = 0.05;
+  double min_turn = 0.01;   
+
   NetworkTable limelightNetworkTable;
   NetworkTableEntry tx;
   NetworkTableEntry ty;
   NetworkTableEntry ta;
 
+  LimelightRunner limelight;
+
+  boolean shouldTrack = true;
+
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public AutoDriveCommand(DriveTrainSubsystem driveTrain) {
+  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
-    limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
-    tx = limelightNetworkTable.getEntry("tx");
-    ty = limelightNetworkTable.getEntry("ty");
-    ta = limelightNetworkTable.getEntry("ta");
+    limelight = LimelightRunner.getInstance();
 
     timer = new Timer();
     addRequirements(driveTrain);
@@ -54,25 +59,40 @@ public class AutoDriveCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    //read values periodically
-    double x = tx.getDouble(0.0);
-    double y = ty.getDouble(0.0);
-    double area = ta.getDouble(0.0);
-
-    //post to smart dashboard periodically
-    SmartDashboard.putNumber("LimelightX", x);
-    SmartDashboard.putNumber("LimelightY", y);
-    SmartDashboard.putNumber("LimelightArea", area);
-
-
-    if (x > 4)
+    if (!shouldTrack)
+      return;
+    
+    if (!limelight.getIsTracking())
     {
-      driveTrain.arcadeDrive(0, 0.3);
-    } 
-    else if (x < -4)
-    {
-      driveTrain.arcadeDrive(0, -0.3);
+      //LookForObject();
+      return;
     }
+
+    double error = limelight.getX();
+
+    double steering_adjust = 0.0;
+
+    if (error > 1.0)
+    {
+      steering_adjust = turnConstant * error - min_turn;
+    }
+    else if (error < 1.0)
+    {
+      steering_adjust = turnConstant * error + min_turn;
+    }
+
+    System.out.println("Steering adjust: " + steering_adjust);
+    driveTrain.arcadeDrive(0.0, steering_adjust);
+  }
+
+  void LookForObject()
+  {
+    driveTrain.arcadeDrive(0.0, 0.3);
+  }
+
+  public void SetShouldTrack(boolean shouldTrack)
+  {
+    this.shouldTrack = shouldTrack;
   }
 
   // Called once the command ends or is interrupted.
