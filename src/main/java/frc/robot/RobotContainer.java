@@ -26,6 +26,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.autocommands.AutonomousCommand;
+import frc.robot.commands.autocommands.DriveForwardDistance;
+import frc.robot.commands.autocommands.RotateDegrees;
 import frc.robot.commands.autocommands.TrackObjectCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
@@ -41,6 +43,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     AutonomousCommand autoCommand;
+
+
     /**
      * Initializes all robot commands.
      */
@@ -93,6 +97,10 @@ public class RobotContainer {
         autoCommand = new AutonomousCommand(robotDriveSubsystem, shootingSubsystem);
         
         robotDriveSubsystem.setDefaultCommand(arcadeDriveCommand);
+
+        SmartDashboard.putData("Rotate 180", new RotateDegrees(180, robotDriveSubsystem, 2.0));
+        SmartDashboard.putData("Drive Forward 2 feet", new DriveForwardDistance(robotDriveSubsystem, 2.0, 1.0));
+
 
         autoChooser.setDefaultOption("Default Auto", autoCommand);
         SmartDashboard.putData(autoChooser);

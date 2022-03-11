@@ -11,7 +11,7 @@ public class RotateDegrees extends CommandBase {
     private boolean isFinished = false;
     Timer timer;
     double degrees;
-    double degreesPerSecond = 39.5;
+    double degreesPerSecond = 36.5;
     double speed = 1.0;
 
     /**

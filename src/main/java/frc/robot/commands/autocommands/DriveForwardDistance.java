@@ -28,10 +28,10 @@ public class DriveForwardDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double distance = Math.abs(driveTrainSub.getAverageEncoderDistanceInFeet() - startingMotorDistance);
+    double traveledDist = Math.abs(driveTrainSub.getAverageEncoderDistanceInFeet() - startingMotorDistance);
     driveTrainSub.tankDriveVolts(speed, speed);
 
-    if (distance > 8) {
+    if (traveledDist > distance) {
       isFinished = true;
     }
   }
