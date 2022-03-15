@@ -4,35 +4,21 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
-import frc.robot.commands.autocommands.AutonomousCommand;
-import frc.robot.commands.autocommands.DriveForwardDistance;
-import frc.robot.commands.autocommands.RotateDegrees;
-import frc.robot.commands.autocommands.TrackObjectCommand;
-import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ShootCommand;
+import frc.robot.commands.autocommands.AutoAlign;
+import frc.robot.commands.autocommands.AutonomousCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.ShootingSubsystem;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class RobotContainer {
     // Drivetrain subsystem.
@@ -44,7 +30,9 @@ public class RobotContainer {
 
     AutonomousCommand autoCommand;
 
+    //private AutoAlign autoAlignCommand;
 
+    JoystickButton bButton = new JoystickButton(controller, Constants.Controller.bButton);
     /**
      * Initializes all robot commands.
      */
@@ -85,6 +73,10 @@ public class RobotContainer {
             () -> controller.getRawButton(Constants.Controller.leftBumper),
             () -> controller.getRawButton(Constants.Controller.yButton));
 
+        //autoAlignCommand = new AutoAlign(robotDriveSubsystem);
+
+        //bButton.whenPressed(autoAlignCommand);
+
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
             () -> controller.getRawButton(Constants.Controller.leftTrigger),
@@ -98,14 +90,21 @@ public class RobotContainer {
         
         robotDriveSubsystem.setDefaultCommand(arcadeDriveCommand);
 
-        SmartDashboard.putData("Rotate 180", new RotateDegrees(180, robotDriveSubsystem, 2.0));
-        SmartDashboard.putData("Drive Forward 2 feet", new DriveForwardDistance(robotDriveSubsystem, 2.0, 1.0));
-
+        // SmartDashboard.putData("Rotate 180", new RotateDegrees(180, robotDriveSubsystem, 2.0));
+        // SmartDashboard.putData("Drive Forward 2 feet", new DriveForwardDistance(robotDriveSubsystem, 2.0, 1.0));
+        // SmartDashboard.putData("Track", new TrackObjectCommand(robotDriveSubsystem));
+        
 
         autoChooser.setDefaultOption("Default Auto", autoCommand);
         SmartDashboard.putData(autoChooser);
     }
-    
+    /*
+    if(karel=facingWest){
+        move();
+        putBall();
+    }
+    toggle pause
+    */
     /**
      * Gets the autonomous command
      * @return the currently selected autonomous command.

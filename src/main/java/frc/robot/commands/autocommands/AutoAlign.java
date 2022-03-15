@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TrackObjectCommand extends CommandBase {
+public class AutoAlign extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
@@ -37,7 +37,7 @@ public class TrackObjectCommand extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
+  public AutoAlign(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelight = LimelightRunner.getInstance();
 
@@ -48,6 +48,7 @@ public class TrackObjectCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+      System.out.println("Initialize auto align");
     timer.reset();
     timer.start();
 
@@ -60,16 +61,22 @@ public class TrackObjectCommand extends CommandBase {
   public void execute() 
   {
 
-    if (timer.get() < 1.0)
+    if (timer.get() > 0.75)
     {
       System.out.println("Stopped auto align");
+      reset();
       isFinished = true;
+      driveTrain.stopMotors();
     }
     if (!shouldTrack)
-      return;
+    {
+        driveTrain.arcadeDrive(0.0, 0.0);
+        return;
+    }
     
     if (!limelight.getIsTracking())
     {
+        driveTrain.arcadeDrive(0.0, 0.0);
       //LookForObject();
       return;
     }
@@ -99,6 +106,13 @@ public class TrackObjectCommand extends CommandBase {
   public void SetShouldTrack(boolean shouldTrack)
   {
     this.shouldTrack = shouldTrack;
+  }
+
+  public void reset()
+  {
+    timer.reset();
+    shouldTrack = true;
+    driveTrain.stopMotors();
   }
 
   // Called once the command ends or is interrupted.

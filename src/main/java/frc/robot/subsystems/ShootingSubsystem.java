@@ -32,7 +32,7 @@ public class ShootingSubsystem extends SubsystemBase {
     public void fastShoot(double input)
     {
         topLeftShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage);
-        topRightShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage);
+        topRightShootMotor.setVoltage(-input * Constants.Kinematics.fastShootVoltage + -input * 0.5);
     }
 
     /**

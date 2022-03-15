@@ -42,7 +42,7 @@ public class IntakeForSecondsCommand extends CommandBase {
     public void execute() {
         if (timer.get() < seconds) 
         {
-            shootingSubsystem.spinIntake(-1);
+            shootingSubsystem.spinIntake(direction);
         } else
         {
             isFinished = true;

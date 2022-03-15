@@ -10,13 +10,13 @@ public final class Constants {
         public static final double tankDriveVoltage = 4.0;
         public static final double arcadeDriveVoltage = 0.63;
 
-        public static final double arcadeDrivePartyModeValue = 0.76;
+        public static final double arcadeDrivePartyModeValue = 0.83;
         public static final double arcadeDrivePrecisionMode = 0.5;
 
         public static final double tankDrivePartyModeVoltage = 0.9;
         public static final double tankDrivePrecisionModeVoltage = 0.5; 
 
-        public static final double fastShootVoltage = 9.25;
+        public static final double fastShootVoltage = 10.0;
 
         public static final double slowShootVoltage = 5.75;
         public static final double reverseShootVoltage = 3;
@@ -67,7 +67,7 @@ public final class Constants {
         public static final int leftBumper = 5;
         public static final int xButton = 4;
         public static final int yButton = 1;
-
+        public static final int bButton = 2;
         
         // to get left stick y-axis: -controller.getY()
         // to get right stick y-axis:  -controller.getRawAxis(3)

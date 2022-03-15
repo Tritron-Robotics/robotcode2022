@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -81,6 +80,7 @@ public class DriveTrainSubsystem extends SubsystemBase{
      */
     public void arcadeDrive(double forwardInput, double rotInput)
     {
+        //System.out.println("Gyro: " + getHeading());
         drive.arcadeDrive(forwardInput, rotInput);
         drive.feed();
     }

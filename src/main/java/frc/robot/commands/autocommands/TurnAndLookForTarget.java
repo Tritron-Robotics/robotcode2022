@@ -15,14 +15,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TrackObjectCommand extends CommandBase {
+public class TurnAndLookForTarget extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
 
-  DoubleSupplier testInput;
-
-  double turnConstant = 0.05;
+  double turnConstant = 0.03;
   double min_turn = 0.01;   
 
   NetworkTable limelightNetworkTable;
@@ -37,7 +35,7 @@ public class TrackObjectCommand extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
+  public TurnAndLookForTarget(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelight = LimelightRunner.getInstance();
 
@@ -59,22 +57,19 @@ public class TrackObjectCommand extends CommandBase {
   @Override
   public void execute() 
   {
-
-    if (timer.get() < 1.0)
-    {
-      System.out.println("Stopped auto align");
-      isFinished = true;
-    }
     if (!shouldTrack)
       return;
     
     if (!limelight.getIsTracking())
     {
-      //LookForObject();
+      System.out.println("No tracking");
+
+      LookForObject();
       return;
     }
 
     double error = limelight.getX();
+    //System.out.println("erorr: " + error);
 
     double steering_adjust = 0.0;
 
@@ -87,13 +82,20 @@ public class TrackObjectCommand extends CommandBase {
       steering_adjust = turnConstant * error + min_turn;
     }
 
-    System.out.println("Steering adjust: " + steering_adjust);
+    if (Math.abs(error) < 2 && limelight.getIsTracking())
+    {
+        isFinished = true;
+        driveTrain.stopMotors();
+        System.out.println("Aligned with target");
+    }
+
+    //System.out.println("Steering adjust: " + steering_adjust);
     driveTrain.arcadeDrive(0.0, steering_adjust);
   }
 
   void LookForObject()
   {
-    driveTrain.arcadeDrive(0.0, 0.3);
+    driveTrain.tankDriveVolts(1.0, -1.0);
   }
 
   public void SetShouldTrack(boolean shouldTrack)

@@ -30,19 +30,19 @@ public class RandomCommands extends SequentialCommandGroup {
             new RotateDegrees(180, driveTrainSubsystem, 4.0),
             new DriveForwardSeconds(0.3,  0.8, driveTrainSubsystem),
             new RotateDegrees(180, driveTrainSubsystem, -4.0),
-            new DriveForwardSeconds(0.3,  -0.8, driveTrainSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
-            new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
-            new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem)
+            new DriveForwardSeconds(0.3,  -0.8, driveTrainSubsystem)
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new ShootForSecondsCommand(0.1, driveTrainSubsystem, shootingSubsystem),
+            // new DoAbsolutelyNothingForSeconds(0.1, driveTrainSubsystem, shootingSubsystem)
         );
 
         addRequirements(driveTrainSubsystem, shootingSubsystem);       
