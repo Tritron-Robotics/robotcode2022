@@ -4,15 +4,28 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.commands.ArcadeDriveCommand;
+import frc.robot.commands.BullMode;
 import frc.robot.commands.ShootCommand;
 import frc.robot.commands.autocommands.AutoAlign;
 import frc.robot.commands.autocommands.AutonomousCommand;
@@ -22,13 +35,16 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class RobotContainer {
     // Drivetrain subsystem.
-    private DriveTrainSubsystem robotDriveSubsystem; 
+    private DriveTrainSubsystem driveTrainSubsystem; 
     private ShootingSubsystem shootingSubsystem;
 
     private final Joystick controller = new Joystick(0);
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+    private AutoAlign autoAlignCommand;
+
     AutonomousCommand autoCommand;
+    BullMode bullMode;
 
     //private AutoAlign autoAlignCommand;
 
@@ -52,7 +68,7 @@ public class RobotContainer {
         CANSparkMax frontLeft = new CANSparkMax(Constants.MotorConstants.frontLeftPort, MotorType.kBrushless); 
         CANSparkMax rearRight = new CANSparkMax(Constants.MotorConstants.rearRightPort, MotorType.kBrushless); 
         CANSparkMax frontRight = new CANSparkMax(Constants.MotorConstants.frontRightPort, MotorType.kBrushless); 
-        robotDriveSubsystem = new DriveTrainSubsystem(rearLeft, frontLeft, rearRight, frontRight);
+        driveTrainSubsystem = new DriveTrainSubsystem(rearLeft, frontLeft, rearRight, frontRight);
 
         CANSparkMax intakeMotor = new CANSparkMax(5, MotorType.kBrushless);
         CANSparkMax topLeftShootMotor = new CANSparkMax(8, MotorType.kBrushed);
@@ -67,15 +83,15 @@ public class RobotContainer {
     private void AssignCommands()
     {
         Command arcadeDriveCommand = new ArcadeDriveCommand(
-            robotDriveSubsystem, 
+            driveTrainSubsystem, 
             () -> -controller.getY(), 
             () -> controller.getX(), 
             () -> controller.getRawButton(Constants.Controller.leftBumper),
             () -> controller.getRawButton(Constants.Controller.yButton));
 
-        //autoAlignCommand = new AutoAlign(robotDriveSubsystem);
+        autoAlignCommand = new AutoAlign(driveTrainSubsystem);
 
-        //bButton.whenPressed(autoAlignCommand);
+        bButton.whenPressed(autoAlignCommand);
 
         Command shootCommand = new ShootCommand(
             shootingSubsystem,
@@ -86,9 +102,9 @@ public class RobotContainer {
         
         shootingSubsystem.setDefaultCommand(shootCommand);
 
-        autoCommand = new AutonomousCommand(robotDriveSubsystem, shootingSubsystem);
-        
-        robotDriveSubsystem.setDefaultCommand(arcadeDriveCommand);
+        autoCommand = new AutonomousCommand(driveTrainSubsystem, shootingSubsystem);
+        //bullMode = new BullMode(driveTrainSubsystem, shootingSubsystem);
+        driveTrainSubsystem.setDefaultCommand(arcadeDriveCommand);
 
         // SmartDashboard.putData("Rotate 180", new RotateDegrees(180, robotDriveSubsystem, 2.0));
         // SmartDashboard.putData("Drive Forward 2 feet", new DriveForwardDistance(robotDriveSubsystem, 2.0, 1.0));
@@ -111,6 +127,65 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() 
     {  
-        return autoChooser.getSelected();
+        return getPathCommand();
+        //return autoChooser.getSelected();
+    }
+
+    public Command getPathCommand() {
+
+        // Create a voltage constraint to ensure we don't accelerate too fast
+        var autoVoltageConstraint =
+            new DifferentialDriveVoltageConstraint(
+                new SimpleMotorFeedforward(
+                    Constants.Kinematics.ksVolts,
+                    Constants.Kinematics.kvVoltSecondsPerMeter,
+                    Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+                    Constants.Kinematics.kDriveKinematics,
+                10);
+    
+        // Create config for trajectory
+        TrajectoryConfig config =
+            new TrajectoryConfig(
+                Constants.Kinematics.kMaxSpeedMetersPerSecond,
+                Constants.Kinematics.kMaxAccelerationMetersPerSecondSquared)
+                // Add kinematics to ensure max speed is actually obeyed
+                .setKinematics(Constants.Kinematics.kDriveKinematics)
+                // Apply the voltage constraint
+                .addConstraint(autoVoltageConstraint);
+    
+        // An example trajectory to follow.  All units in meters.
+        edu.wpi.first.math.trajectory.Trajectory exampleTrajectory =
+            TrajectoryGenerator.generateTrajectory(
+                // Start at the origin facing the +X direction
+                new Pose2d(0, 0, new Rotation2d(0)),
+                // Pass through these two interior waypoints, making an 's' curve path
+                List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+                // End 3 meters straight ahead of where we started, facing forward
+                new Pose2d(3, 0, new Rotation2d(0)),
+                // Pass config
+                config);
+    
+        RamseteCommand ramseteCommand =
+            new RamseteCommand(
+                exampleTrajectory,
+                driveTrainSubsystem::getPose,
+                new RamseteController(Constants.Kinematics.kRamseteB, Constants.Kinematics.kRamseteZeta),
+                new SimpleMotorFeedforward(
+                    Constants.Kinematics.ksVolts,
+                    Constants.Kinematics.kvVoltSecondsPerMeter,
+                    Constants.Kinematics.kaVoltSecondsSquaredPerMeter),
+                    Constants.Kinematics.kDriveKinematics,
+                driveTrainSubsystem::getWheelSpeeds,
+                new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
+                new PIDController(Constants.Kinematics.kPDriveVel, 0, 0),
+                // RamseteCommand passes volts to the callback
+                driveTrainSubsystem::tankDriveVolts,
+                driveTrainSubsystem);
+
+        // Reset odometry to the starting pose of the trajectory.
+        driveTrainSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
+
+    // Run path following command, then stop at the end.
+    return ramseteCommand.andThen(() -> driveTrainSubsystem.tankDriveVolts(0, 0));
     }
 }

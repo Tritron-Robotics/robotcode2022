@@ -57,7 +57,7 @@ public class DriveTrainSubsystem extends SubsystemBase{
 
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.calibrate();
-        gyro.enableLogging(true);
+        //gyro.enableLogging(true);
         gyro.reset();
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d()); // Track Robot Position        
     }

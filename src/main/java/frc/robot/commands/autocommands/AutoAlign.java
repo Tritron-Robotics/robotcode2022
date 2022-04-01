@@ -22,7 +22,7 @@ public class AutoAlign extends CommandBase {
 
   DoubleSupplier testInput;
 
-  double turnConstant = 0.05;
+  double turnConstant = 0.03;
   double min_turn = 0.01;   
 
   NetworkTable limelightNetworkTable;
@@ -49,6 +49,7 @@ public class AutoAlign extends CommandBase {
   @Override
   public void initialize() {
       System.out.println("Initialize auto align");
+    isFinished = false;
     timer.reset();
     timer.start();
 
@@ -60,7 +61,6 @@ public class AutoAlign extends CommandBase {
   @Override
   public void execute() 
   {
-
     if (timer.get() > 0.75)
     {
       System.out.println("Stopped auto align");
@@ -118,6 +118,7 @@ public class AutoAlign extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //System.out.println("Stop auto align + " + interrupted + " is finished: " + isFinished);
     driveTrain.stopMotors();
   }
 

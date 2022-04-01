@@ -21,8 +21,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
         // drive forward and look for ball
 
         addCommands(
-            new ShootForSecondsCommand(5.0, false, driveTrainSubsystem, shootingSubsystem),
-            new DriveForwardDistance(driveTrainSubsystem, 9.0, -2.0)
+            //new ShootForSecondsCommand(5.0, false, driveTrainSubsystem, shootingSubsystem),
+            //new DriveForwardDistance(driveTrainSubsystem, 9.0, -2.0)
             );
 
         // addCommands(
