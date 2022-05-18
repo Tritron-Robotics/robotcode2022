@@ -15,15 +15,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TrackObjectCommand extends CommandBase {
+public class AdjustDistanceFromTarget extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
-  Timer timer;
+  Timer timer = new Timer();
 
-  DoubleSupplier testInput;
-
-  double turnConstant = 0.05;
-  double min_turn = 0.01;   
+  double moveConstant = 0.03;
+  double minMove = 0.01;   
 
   NetworkTable limelightNetworkTable;
   NetworkTableEntry tx;
@@ -34,10 +32,13 @@ public class TrackObjectCommand extends CommandBase {
 
   boolean shouldTrack = true;
 
+  boolean isPaused = false;
+  Timer globalTimer = new Timer();
+
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
+  public AdjustDistanceFromTarget(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelight = LimelightRunner.getInstance();
 
@@ -51,6 +52,8 @@ public class TrackObjectCommand extends CommandBase {
     timer.reset();
     timer.start();
 
+    globalTimer.start();
+
     driveTrain.arcadeDrive(0, 0);
     SmartDashboard.putNumber("ArcadeDriveY", 0);
   }
@@ -59,41 +62,76 @@ public class TrackObjectCommand extends CommandBase {
   @Override
   public void execute() 
   {
-
-    if (timer.get() < 1.0)
-    {
-      System.out.println("Stopped auto align");
-      isFinished = true;
-    }
     if (!shouldTrack)
       return;
     
+    
+    // if (justMoveForward)
+    // {
+    //     if (timer.get() < 2.0)
+    //     {
+    //         System.out.println("Move forward");
+    //         driveTrain.tankDriveVolts(1.0, 1.0);
+    //     } 
+    //     else
+    //     {
+    //         isFinished = true;
+    //         System.out.println("Finished moving forward");
+    //     }
+    //     return;
+    // }
     if (!limelight.getIsTracking())
     {
-      //LookForObject();
+      timer.stop();
+      isPaused = true;
+      System.out.println("No tracking");
+      driveTrain.tankDriveVolts(1.0, 1.0);
       return;
     }
 
-    double error = limelight.getX();
+    double error = limelight.getY();
+    //System.out.println("erorr: " + error);
 
-    double steering_adjust = 0.0;
+    double movementAdjust = 0.0;
 
+    if (isPaused)
+    {
+        timer.start();
+        isPaused= false;
+    }
     if (error > 1.0)
     {
-      steering_adjust = turnConstant * error - min_turn;
+      movementAdjust = moveConstant * error - minMove;
     }
     else if (error < 1.0)
     {
-      steering_adjust = turnConstant * error + min_turn;
+      movementAdjust = moveConstant * error + minMove;
     }
 
-    System.out.println("Steering adjust: " + steering_adjust);
-    driveTrain.arcadeDrive(0.0, steering_adjust);
-  }
+    if (globalTimer.get() > 4.0)
+    {
+        if (globalTimer.get() < 5.0)
+        {
+            driveTrain.tankDriveVolts(1.0, 1.0);
+            System.out.println("exceeded time limits move forward");
+            
+        } 
+        else if (globalTimer.get() > 5.0)
+        {
+            isFinished = true;
+            System.out.println("finished global timer");
+        }
+    }
 
-  void LookForObject()
-  {
-    driveTrain.arcadeDrive(0.0, 0.3);
+    if (Math.abs(error) < 2 && limelight.getIsTracking())
+    {
+        isFinished = true;
+        driveTrain.stopMotors();
+        System.out.println("Aligned with target");
+    }
+
+    System.out.println("Movement adjust: " + movementAdjust);
+    driveTrain.arcadeDrive(movementAdjust, 0.0);
   }
 
   public void SetShouldTrack(boolean shouldTrack)

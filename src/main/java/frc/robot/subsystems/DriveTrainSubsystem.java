@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase; 
 import frc.robot.Constants;;
 
 /** Add your docs here. */
@@ -57,6 +56,9 @@ public class DriveTrainSubsystem extends SubsystemBase{
         drive = new DifferentialDrive(rearLeft, rearRight);
 
         gyro = new AHRS(SPI.Port.kMXP);
+        gyro.calibrate();
+        //gyro.enableLogging(true);
+        gyro.reset();
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d()); // Track Robot Position        
     }
 
@@ -66,11 +68,11 @@ public class DriveTrainSubsystem extends SubsystemBase{
      * @param rightVolts Voltage for rear right motors
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-       // System.out.println("Left volts: " + leftVolts);
-        //System.out.println("Right volts: " + rightVolts);
+        System.out.println("Left volts: " + leftVolts);
+        System.out.println("Right volts: " + rightVolts);
         //drive.tankDrive(leftVolts, rightVolts);
-        rearLeft.setVoltage(leftVolts);
-        rearRight.setVoltage(rightVolts);
+        //rearLeft.setVoltage(leftVolts);
+        //rearRight.setVoltage(rightVolts);
         drive.feed();
     }
 
@@ -81,6 +83,7 @@ public class DriveTrainSubsystem extends SubsystemBase{
      */
     public void arcadeDrive(double forwardInput, double rotInput)
     {
+        //System.out.println("Gyro: " + getHeading());
         drive.arcadeDrive(forwardInput, rotInput);
         drive.feed();
     }

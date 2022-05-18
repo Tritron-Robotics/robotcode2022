@@ -13,16 +13,18 @@ public class ShootForSecondsCommand extends CommandBase {
     Timer timer;
 
     double seconds;
+    boolean upperShoot = false;
     /**
      * Command that makes the robot shoot for seconds.
      * 
      * @param driveTrainSubsystem The drive train subsystem.
      * @param shootingSubsystem The subsystem for shooting.
      */
-    public ShootForSecondsCommand(double seconds, DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
+    public ShootForSecondsCommand(double seconds, boolean upperShoot, DriveTrainSubsystem driveTrainSubsystem, ShootingSubsystem shootingSubsystem) {
         this.driveTrain = driveTrainSubsystem;
         this.shootingSubsystem = shootingSubsystem;
         this.seconds = seconds;
+        this.upperShoot = upperShoot;
 
         timer = new Timer();
         addRequirements(driveTrainSubsystem, shootingSubsystem);
@@ -45,7 +47,15 @@ public class ShootForSecondsCommand extends CommandBase {
         if (timer.get() < seconds) 
         {
             shootingSubsystem.spinIntake(1.0);
-            shootingSubsystem.fastShoot(1.0);
+            if (upperShoot)
+            {
+
+                shootingSubsystem.fastShoot(1.0);
+            } 
+            else
+            {
+                shootingSubsystem.slowShoot(1.0);
+            }
         } 
         else
         {

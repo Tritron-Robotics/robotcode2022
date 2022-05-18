@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.LimelightRunner;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
-public class TrackObjectCommand extends CommandBase {
+public class AutoAlign extends CommandBase {
   DriveTrainSubsystem driveTrain;
   private boolean isFinished = false;
   Timer timer;
 
   DoubleSupplier testInput;
 
-  double turnConstant = 0.05;
+  double turnConstant = 0.03;
   double min_turn = 0.01;   
 
   NetworkTable limelightNetworkTable;
@@ -37,7 +37,7 @@ public class TrackObjectCommand extends CommandBase {
   /** Creates a new AutoDrive. 
    * @param driveTrain The drive train subsystem.
    */
-  public TrackObjectCommand(DriveTrainSubsystem driveTrain) {
+  public AutoAlign(DriveTrainSubsystem driveTrain) {
     this.driveTrain = driveTrain;
     limelight = LimelightRunner.getInstance();
 
@@ -48,6 +48,8 @@ public class TrackObjectCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+      System.out.println("Initialize auto align");
+    isFinished = false;
     timer.reset();
     timer.start();
 
@@ -59,17 +61,23 @@ public class TrackObjectCommand extends CommandBase {
   @Override
   public void execute() 
   {
-
-    if (timer.get() < 1.0)
+    if (timer.get() > 0.75)
     {
       System.out.println("Stopped auto align");
+      reset();
       isFinished = true;
+      driveTrain.stopMotors();
     }
     if (!shouldTrack)
-      return;
+    {
+        driveTrain.arcadeDrive(0.0, 0.0);
+        return;
+    }
     
     if (!limelight.getIsTracking())
     {
+      System.out.println("Not tracking");
+        driveTrain.arcadeDrive(0.0, 0.0);
       //LookForObject();
       return;
     }
@@ -101,9 +109,17 @@ public class TrackObjectCommand extends CommandBase {
     this.shouldTrack = shouldTrack;
   }
 
+  public void reset()
+  {
+    timer.reset();
+    shouldTrack = true;
+    driveTrain.stopMotors();
+  }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //System.out.println("Stop auto align + " + interrupted + " is finished: " + isFinished);
     driveTrain.stopMotors();
   }
 

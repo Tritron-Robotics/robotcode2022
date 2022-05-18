@@ -88,7 +88,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    LimelightRunner.getInstance().setLedMode(3);
+    //System.out.println(LimelightRunner.getInstance().getNetworkTable().getEntry("ledMode").getDouble(0));
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
