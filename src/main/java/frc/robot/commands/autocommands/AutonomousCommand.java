@@ -20,10 +20,29 @@ public class AutonomousCommand extends SequentialCommandGroup {
     {
         // drive forward and look for ball
 
-        addCommands(
+        //addCommands(
+            
             //new ShootForSecondsCommand(5.0, false, driveTrainSubsystem, shootingSubsystem),
             //new DriveForwardDistance(driveTrainSubsystem, 9.0, -2.0)
-            );
+        //    );
+
+        // addCommands(
+        //     new DriveForwardSeconds(0.1, 1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, -1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, 1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, -1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, 1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, -1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, 1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, -1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, 1, driveTrainSubsystem),
+        //     new DriveForwardSeconds(0.1, -1, driveTrainSubsystem),
+        //     new RotateDegrees(180, driveTrainSubsystem, 2.0),
+        //     new DoAbsolutelyNothingForSeconds(0.25, driveTrainSubsystem, shootingSubsystem),
+        //     new RotateDegrees(180, driveTrainSubsystem, 2.0),
+        //     new ShootForSecondsCommand(1.0, true, driveTrainSubsystem, shootingSubsystem)
+        // );
+
 
         // addCommands(
         //     new DriveForwardDistance(driveTrainSubsystem, 3.7, -2.0),

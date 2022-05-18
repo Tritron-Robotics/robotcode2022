@@ -32,14 +32,23 @@ public class LimelightRunner {
   public LimelightRunner()
   {
     limelightNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
+    //limelightNetworkTable.getEntry("ledMode").setNumber(3);
     tx = limelightNetworkTable.getEntry("tx");
     ty = limelightNetworkTable.getEntry("ty");
     ta = limelightNetworkTable.getEntry("ta");  
     tv = limelightNetworkTable.getEntry("tv"); 
   }
 
-  public void execute()
+  public NetworkTable getNetworkTable()
   {
+    return limelightNetworkTable;
+  }
+
+  public void execute()
+  {  
+    // System.out.println(limelightNetworkTable.getEntry("ledMode").getDouble(0));
+
+    //limelightNetworkTable.getEntry("ledMode").setNumber(3);
     //post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
@@ -62,6 +71,11 @@ public class LimelightRunner {
   {
     a = ta.getDouble(0.0);
     return a;
+  }
+
+  public void setLedMode(int mode)
+  {
+    limelightNetworkTable.getEntry("ledMode").setNumber(mode);
   }
 
   public boolean getIsTracking()

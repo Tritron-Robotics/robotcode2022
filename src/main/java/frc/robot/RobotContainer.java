@@ -5,6 +5,8 @@
 package frc.robot;
 
 import java.util.List;
+import java.util.Random;
+import java.util.function.DoubleSupplier;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -82,35 +84,71 @@ public class RobotContainer {
      */
     private void AssignCommands()
     {
-        Command arcadeDriveCommand = new ArcadeDriveCommand(
+        Command defaultDriveCommand = new ArcadeDriveCommand(
             driveTrainSubsystem, 
             () -> -controller.getY(), 
             () -> controller.getX(), 
             () -> controller.getRawButton(Constants.Controller.leftBumper),
             () -> controller.getRawButton(Constants.Controller.yButton));
 
-        autoAlignCommand = new AutoAlign(driveTrainSubsystem);
-
-        bButton.whenPressed(autoAlignCommand);
-
-        Command shootCommand = new ShootCommand(
+        Command defaultShootCommand = new ShootCommand(
             shootingSubsystem,
             () -> controller.getRawButton(Constants.Controller.leftTrigger),
             () -> controller.getRawButton(Constants.Controller.rightTrigger),          
             () -> controller.getRawAxis(3),
-            () -> controller.getRawButton(Constants.Controller.xButton));       
+            () -> controller.getRawButtonPressed(Constants.Controller.leftTrigger),
+            () -> controller.getRawButtonPressed(Constants.Controller.rightTrigger),
+            () -> controller.getRawButton(Constants.Controller.xButton),
+            false); 
+
+        //JESUS (CHRIST)
+        Command jesusDriveCommand = new ArcadeDriveCommand(
+            driveTrainSubsystem, 
+            () -> -controller.getY(), 
+            () -> controller.getRawAxis(2), 
+            () -> controller.getRawButton(Constants.Controller.leftBumper),
+            () -> controller.getRawButton(Constants.Controller.yButton));
+
+        Command jesusShootCommand = new ShootCommand(
+            shootingSubsystem,
+            () -> controller.getRawButton(Constants.Controller.leftTrigger),
+            () -> controller.getRawButton(Constants.Controller.rightTrigger),          
+            () -> 
+            {
+                if(controller.getRawButton(Constants.Controller.rightBumper))
+                {
+                    return -1;
+                }
+                else if(controller.getRawButton(Constants.Controller.xButton))
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            },
+            () -> controller.getRawButtonPressed(Constants.Controller.leftTrigger),
+            () -> controller.getRawButtonPressed(Constants.Controller.rightTrigger),
+            () -> controller.getRawButton(Constants.Controller.xButton),
+            false); 
+
+        autoAlignCommand = new AutoAlign(driveTrainSubsystem);
+
+        bButton.whenPressed(autoAlignCommand);
+
         
-        shootingSubsystem.setDefaultCommand(shootCommand);
+        shootingSubsystem.setDefaultCommand(defaultShootCommand);
 
         autoCommand = new AutonomousCommand(driveTrainSubsystem, shootingSubsystem);
         //bullMode = new BullMode(driveTrainSubsystem, shootingSubsystem);
-        driveTrainSubsystem.setDefaultCommand(arcadeDriveCommand);
+        driveTrainSubsystem.setDefaultCommand(defaultDriveCommand);
 
         // SmartDashboard.putData("Rotate 180", new RotateDegrees(180, robotDriveSubsystem, 2.0));
         // SmartDashboard.putData("Drive Forward 2 feet", new DriveForwardDistance(robotDriveSubsystem, 2.0, 1.0));
         // SmartDashboard.putData("Track", new TrackObjectCommand(robotDriveSubsystem));
         
-
+        //controlChooser.addOption("Chris", new Object());
         autoChooser.setDefaultOption("Default Auto", autoCommand);
         SmartDashboard.putData(autoChooser);
     }
@@ -127,12 +165,13 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() 
     {  
-        return getPathCommand();
-        //return autoChooser.getSelected();
+        //return getPathCommand();
+        return autoChooser.getSelected();
     }
 
     public Command getPathCommand() {
 
+        System.out.println("Get path command");
         // Create a voltage constraint to ensure we don't accelerate too fast
         var autoVoltageConstraint =
             new DifferentialDriveVoltageConstraint(
@@ -186,6 +225,7 @@ public class RobotContainer {
         driveTrainSubsystem.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
+    //return ramseteCommand.andThen(() -> System.out.println("after command"));
     return ramseteCommand.andThen(() -> driveTrainSubsystem.tankDriveVolts(0, 0));
     }
 }

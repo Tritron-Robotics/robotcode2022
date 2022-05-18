@@ -76,6 +76,7 @@ public class AutoAlign extends CommandBase {
     
     if (!limelight.getIsTracking())
     {
+      System.out.println("Not tracking");
         driveTrain.arcadeDrive(0.0, 0.0);
       //LookForObject();
       return;

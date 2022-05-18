@@ -16,7 +16,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase; 
 import frc.robot.Constants;;
 
 /** Add your docs here. */
@@ -68,11 +68,11 @@ public class DriveTrainSubsystem extends SubsystemBase{
      * @param rightVolts Voltage for rear right motors
      */
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-       // System.out.println("Left volts: " + leftVolts);
-        //System.out.println("Right volts: " + rightVolts);
+        System.out.println("Left volts: " + leftVolts);
+        System.out.println("Right volts: " + rightVolts);
         //drive.tankDrive(leftVolts, rightVolts);
-        rearLeft.setVoltage(leftVolts);
-        rearRight.setVoltage(rightVolts);
+        //rearLeft.setVoltage(leftVolts);
+        //rearRight.setVoltage(rightVolts);
         drive.feed();
     }
 

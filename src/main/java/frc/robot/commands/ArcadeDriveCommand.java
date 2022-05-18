@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.Random;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
@@ -19,7 +20,6 @@ public class ArcadeDriveCommand extends CommandBase {
   private DoubleSupplier rotInput;
   private BooleanSupplier partyModeInput;
   private BooleanSupplier precisionModeInput;
-
 
   /**
    * Constructor for the ArcadeDriveCommand class
